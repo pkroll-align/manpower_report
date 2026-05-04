@@ -3,6 +3,17 @@ import streamlit as st
 from utils.calculations import build_report_sections
 
 
+SECTION_COLORS = {
+    "Total Manpower": "#1f4e78",
+    "Warehouse": "#5b9bd5",
+    "DH13": "#70ad47",
+    "DH15": "#70ad47",
+    "DH18": "#70ad47",
+    "DH20": "#70ad47",
+    "Supercore": "#8064a2",
+}
+
+
 def render_report_header(selected_filters):
     report_date = selected_filters.get("date")
     report_shift = selected_filters.get("shift")
@@ -25,6 +36,28 @@ def render_report_header(selected_filters):
         st.metric("Time", report_time)
 
 
+def render_section_header(section_name):
+    color = SECTION_COLORS.get(section_name, "#404040")
+
+    st.markdown(
+        f"""
+        <div style="
+            background-color: {color};
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 24px;
+            margin-bottom: 8px;
+        ">
+            {section_name}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
 def render_report_table(section_df):
     numeric_cols = [
         col for col in section_df.columns
@@ -39,7 +72,7 @@ def render_report_table(section_df):
             **{
                 "text-align": "left",
                 "font-weight": "500",
-                "min-width": "280px",
+                "min-width": "300px",
             }
         )
         .set_properties(
@@ -67,19 +100,14 @@ def render_report_table(section_df):
     )
 
 
-def render_section(section_name, section_df):
-    st.markdown("---")
-    st.markdown(f"### {section_name}")
-    render_report_table(section_df)
-
-
 def render_dashboard(filtered_df, selected_filters):
     render_report_header(selected_filters)
 
     sections = build_report_sections(filtered_df)
 
     for section_name, section_df in sections.items():
-        render_section(section_name, section_df)
+        render_section_header(section_name)
+        render_report_table(section_df)
 
     st.markdown("---")
 
