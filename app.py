@@ -4,11 +4,15 @@ import pandas as pd
 import json
 from google.oauth2.service_account import Credentials
 
+st.set_page_config(page_title="Manpower Dashboard", layout="wide")
+
+# --- Scopes ---
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets.readonly",
     "https://www.googleapis.com/auth/drive.readonly",
 ]
 
+# --- Load credentials from Streamlit secrets ---
 service_account_info = json.loads(st.secrets["gcp_service_account"]["json"])
 
 creds = Credentials.from_service_account_info(
@@ -18,14 +22,19 @@ creds = Credentials.from_service_account_info(
 
 gc = gspread.authorize(creds)
 
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1e-0KRdTZQbQj4HAlJxerF7bHFp2kC3-vZuFIUaVnoGU/edit?usp=sharing"
+# --- Your Sheet Info ---
+SHEET_ID = "1e-0KRdTZQbQj4HAlJxerF7bHFp2kC3-vZuFIUaVnoGU"
 WORKSHEET_NAME = "Day Form Responses"
 
-sheet = gc.open_by_url(SHEET_URL).worksheet(WORKSHEET_NAME)
-
+# --- Load data ---
+sheet = gc.open_by_key(SHEET_ID).worksheet(WORKSHEET_NAME)
 data = sheet.get_all_records()
 df = pd.DataFrame(data)
 
+# --- UI ---
 st.title("Manpower Dashboard")
+
+st.subheader("Raw Data")
 st.dataframe(df, use_container_width=True)
+
 st.write("Rows loaded:", len(df))
