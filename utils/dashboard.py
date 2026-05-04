@@ -4,8 +4,18 @@ from utils.calculations import build_report_sections
 
 
 def render_report_table(section_df):
+    styled_df = section_df.style.apply(
+        lambda row: [
+            "font-weight: bold; background-color: #d9d9d9;"
+            if row["Category"] == "TOTAL"
+            else ""
+            for _ in row
+        ],
+        axis=1
+    )
+
     st.dataframe(
-        section_df,
+        styled_df,
         use_container_width=True,
         hide_index=True
     )

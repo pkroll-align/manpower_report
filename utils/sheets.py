@@ -55,7 +55,7 @@ def normalize_rows(rows, header_count):
     return normalized_rows
 
 
-def load_sheet_data(sheet_id, worksheet_name, range_name="A:BT"):
+def load_sheet_data(sheet_id, worksheet_name, range_name="A:BU"):
     gc = get_google_client()
 
     spreadsheet = gspread.Spreadsheet(gc.http_client, {"id": sheet_id})
@@ -74,6 +74,9 @@ def load_sheet_data(sheet_id, worksheet_name, range_name="A:BT"):
     df = pd.DataFrame(rows, columns=headers)
 
     # Drop unwanted source columns: E, AO, AP
+    # E  = index 4
+    # AO = index 40
+    # AP = index 41
     columns_to_drop = []
 
     for index in [4, 40, 41]:

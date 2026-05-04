@@ -3,6 +3,13 @@ import streamlit as st
 from datetime import date
 
 
+DATE_COL = "Adjusted Date"
+TIMESTAMP_COL = "Timestamp"
+COMPANY_COL = "Company:"
+TIME_COL = "Time"
+SHIFT_COL = "Which shift?"
+
+
 DAY_SHIFT_TIMES = [
     "9:00 AM",
     "12:00 PM",
@@ -18,19 +25,53 @@ NIGHT_SHIFT_TIMES = [
 ]
 
 
+def keep_latest_company_entries(df):
+    required_cols = [
+        TIMESTAMP_COL,
+        COMPANY_COL,
+        DATE_COL,
+        SHIFT_COL,
+        TIME_COL,
+    ]
+
+    for col in required_cols:
+        if col not in df.columns:
+            return df
+
+    filtered_df = df.copy()
+
+    filtered_df[TIMESTAMP_COL] = pd.to_datetime(
+        filtered_df[TIMESTAMP_COL],
+        errors="coerce"
+    )
+
+    filtered_df = filtered_df.sort_values(
+        by=TIMESTAMP_COL,
+        ascending=False
+    )
+
+    filtered_df = filtered_df.drop_duplicates(
+        subset=[
+            COMPANY_COL,
+            DATE_COL,
+            SHIFT_COL,
+            TIME_COL,
+        ],
+        keep="first"
+    )
+
+    return filtered_df
+
+
 def apply_filters(df):
     filtered_df = df.copy()
 
     st.sidebar.header("Filters")
 
-    date_col = "Timestamp"
-    time_col = "Time"
-    shift_col = "Which shift?"
-
-    # Date filter: single day, default today
-    if date_col in filtered_df.columns:
-        filtered_df[date_col] = pd.to_datetime(
-            filtered_df[date_col],
+    # Date filter uses Adjusted Date, not Timestamp
+    if DATE_COL in filtered_df.columns:
+        filtered_df[DATE_COL] = pd.to_datetime(
+            filtered_df[DATE_COL],
             errors="coerce"
         )
 
@@ -40,8 +81,10 @@ def apply_filters(df):
         )
 
         filtered_df = filtered_df[
-            filtered_df[date_col].dt.date == selected_date
+            filtered_df[DATE_COL].dt.date == selected_date
         ]
+    else:
+        st.sidebar.warning(f"Missing date column: {DATE_COL}")
 
     # Shift dropdown
     selected_shift = st.sidebar.selectbox(
@@ -49,10 +92,12 @@ def apply_filters(df):
         options=["Day Shift", "Night Shift"]
     )
 
-    if shift_col in filtered_df.columns:
+    if SHIFT_COL in filtered_df.columns:
         filtered_df = filtered_df[
-            filtered_df[shift_col] == selected_shift
+            filtered_df[SHIFT_COL] == selected_shift
         ]
+    else:
+        st.sidebar.warning(f"Missing shift column: {SHIFT_COL}")
 
     # Time dropdown based on selected shift
     time_options = DAY_SHIFT_TIMES if selected_shift == "Day Shift" else NIGHT_SHIFT_TIMES
@@ -62,9 +107,14 @@ def apply_filters(df):
         options=time_options
     )
 
-    if time_col in filtered_df.columns:
+    if TIME_COL in filtered_df.columns:
         filtered_df = filtered_df[
-            filtered_df[time_col] == selected_time
+            filtered_df[TIME_COL] == selected_time
         ]
+    else:
+        st.sidebar.warning(f"Missing time column: {TIME_COL}")
+
+    # Keep only newest entry per company/date/shift/time
+    filtered_df = keep_latest_company_entries(filtered_df)
 
     return filtered_df
