@@ -27,12 +27,8 @@ st.title("Manpower Dashboard")
 spreadsheet = gspread.Spreadsheet(gc.http_client, {"id": SHEET_ID})
 sheet = spreadsheet.worksheet(WORKSHEET_NAME)
 
-# --- Only pull A:BV ---
-values = sheet.get("A:BV")
-
-headers = values[0]
-rows = values[1:]
-
+data = sheet.get_all_records()
+df = pd.DataFrame(data)
 
 st.subheader("Raw Data")
 st.dataframe(df, use_container_width=True)
