@@ -23,6 +23,9 @@ gc = gspread.authorize(creds)
 SHEET_ID = "1e-0KRdTZQbQj4HAlJxerF7bHFp2kC3-vZuFIUaVnoGU"
 WORKSHEET_NAME = "Day Form Responses"
 
+st.write("Service account email being used:")
+st.code(service_account_info["client_email"])
+
 st.title("Manpower Dashboard")
 
 spreadsheet = gc.open_by_key(SHEET_ID)
