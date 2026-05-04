@@ -1,3 +1,5 @@
+import html
+
 import streamlit as st
 
 from utils.calculations import build_report_sections
@@ -41,71 +43,96 @@ def render_section_header(section_name):
             margin-top: 16px;
             margin-bottom: 6px;
         ">
-            {section_name}
+            {html.escape(section_name)}
         </div>
         """,
         unsafe_allow_html=True
     )
 
 
-def render_report_table(section_df):
-    numeric_cols = [
-        col for col in section_df.columns
-        if col != "Category"
-    ]
+def format_cell_value(value, is_category=False):
+    if is_category:
+        return html.escape(str(value))
 
-    styled_df = (
-        section_df.style
-        .format({col: "{:,.0f}" for col in numeric_cols})
-        .set_table_styles([
-            {
-                "selector": "th",
-                "props": [
-                    ("font-size", "12px"),
-                    ("font-weight", "700"),
-                    ("text-align", "center"),
-                    ("padding", "3px 6px"),
-                ],
-            },
-            {
-                "selector": "td",
-                "props": [
-                    ("font-size", "12px"),
-                    ("padding", "3px 6px"),
-                ],
-            },
-        ])
-        .set_properties(
-            subset=["Category"],
-            **{
-                "text-align": "left",
-                "font-weight": "500",
-                "min-width": "260px",
-            }
-        )
-        .set_properties(
-            subset=numeric_cols,
-            **{
-                "text-align": "center",
-                "min-width": "65px",
-            }
-        )
-        .apply(
-            lambda row: [
-                "font-weight: bold; background-color: #d9d9d9;"
-                if row["Category"] == "TOTAL"
-                else ""
-                for _ in row
-            ],
-            axis=1
-        )
-    )
+    try:
+        return f"{float(value):,.0f}"
+    except (TypeError, ValueError):
+        return ""
 
-    st.dataframe(
-        styled_df,
-        use_container_width=True,
-        hide_index=True
-    )
+
+def render_static_report_table(section_df):
+    columns = list(section_df.columns)
+
+    table_html = """
+    <style>
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            table-layout: fixed;
+            margin-bottom: 10px;
+        }
+
+        .report-table th {
+            background-color: #f2f2f2;
+            font-weight: 700;
+            text-align: center;
+            padding: 4px 6px;
+            border: 1px solid #d9d9d9;
+        }
+
+        .report-table td {
+            padding: 4px 6px;
+            border: 1px solid #d9d9d9;
+            text-align: center;
+        }
+
+        .report-table th:first-child,
+        .report-table td:first-child {
+            text-align: left;
+            width: 280px;
+            font-weight: 500;
+        }
+
+        .report-table tr.total-row td {
+            background-color: #d9d9d9;
+            font-weight: 700;
+        }
+    </style>
+
+    <table class="report-table">
+        <thead>
+            <tr>
+    """
+
+    for col in columns:
+        table_html += f"<th>{html.escape(str(col))}</th>"
+
+    table_html += """
+            </tr>
+        </thead>
+        <tbody>
+    """
+
+    for _, row in section_df.iterrows():
+        is_total_row = row.get("Category") == "TOTAL"
+        row_class = "total-row" if is_total_row else ""
+
+        table_html += f'<tr class="{row_class}">'
+
+        for col in columns:
+            is_category = col == "Category"
+            value = format_cell_value(row[col], is_category=is_category)
+            table_html += f"<td>{value}</td>"
+
+        table_html += "</tr>"
+
+    table_html += """
+        </tbody>
+    </table>
+    """
+
+    st.markdown(table_html, unsafe_allow_html=True)
 
 
 def render_dashboard(filtered_df, selected_filters):
@@ -115,4 +142,4 @@ def render_dashboard(filtered_df, selected_filters):
 
     for section_name, section_df in sections.items():
         render_section_header(section_name)
-        render_report_table(section_df)
+        render_static_report_table(section_df)
