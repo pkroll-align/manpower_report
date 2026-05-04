@@ -14,3 +14,6 @@ def render_dashboard(filtered_df):
 
     with st.expander("Column names"):
         st.write(list(filtered_df.columns))
+
+    with st.expander("Data preview"):
+        st.write(filtered_df.head())
