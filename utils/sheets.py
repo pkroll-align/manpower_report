@@ -41,6 +41,20 @@ def clean_headers(headers):
     return clean_headers_list
 
 
+def normalize_rows(rows, header_count):
+    normalized_rows = []
+
+    for row in rows:
+        if len(row) < header_count:
+            row = row + [""] * (header_count - len(row))
+        elif len(row) > header_count:
+            row = row[:header_count]
+
+        normalized_rows.append(row)
+
+    return normalized_rows
+
+
 def load_sheet_data(sheet_id, worksheet_name, range_name="A:BT"):
     gc = get_google_client()
 
@@ -49,20 +63,22 @@ def load_sheet_data(sheet_id, worksheet_name, range_name="A:BT"):
 
     values = sheet.get(range_name)
 
+    if not values:
+        return pd.DataFrame()
+
     headers = clean_headers(values[0])
     rows = values[1:]
+
+    rows = normalize_rows(rows, len(headers))
 
     df = pd.DataFrame(rows, columns=headers)
 
     # Drop unwanted source columns: E, AO, AP
-    # E  = index 4
-    # AO = index 40
-    # AP = index 41
-    columns_to_drop = [
-        df.columns[4],
-        df.columns[40],
-        df.columns[41],
-    ]
+    columns_to_drop = []
+
+    for index in [4, 40, 41]:
+        if index < len(df.columns):
+            columns_to_drop.append(df.columns[index])
 
     df = df.drop(columns=columns_to_drop)
 
