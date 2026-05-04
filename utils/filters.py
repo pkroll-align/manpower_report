@@ -24,7 +24,6 @@ def apply_filters(df):
     st.sidebar.header("Filters")
 
     date_col = "Timestamp"
-    company_col = "Company:"
     time_col = "Time"
     shift_col = "Which shift?"
 
@@ -55,11 +54,8 @@ def apply_filters(df):
             filtered_df[shift_col] == selected_shift
         ]
 
-    # Time dropdown changes based on selected shift
-    if selected_shift == "Day Shift":
-        time_options = DAY_SHIFT_TIMES
-    else:
-        time_options = NIGHT_SHIFT_TIMES
+    # Time dropdown based on selected shift
+    time_options = DAY_SHIFT_TIMES if selected_shift == "Day Shift" else NIGHT_SHIFT_TIMES
 
     selected_time = st.sidebar.selectbox(
         "Time",
@@ -70,23 +66,5 @@ def apply_filters(df):
         filtered_df = filtered_df[
             filtered_df[time_col] == selected_time
         ]
-
-    # Company filter
-    if company_col in filtered_df.columns:
-        company_options = sorted([
-            x for x in filtered_df[company_col].dropna().unique()
-            if str(x).strip() != ""
-        ])
-
-        selected_companies = st.sidebar.multiselect(
-            "Company",
-            options=company_options,
-            default=company_options
-        )
-
-        if selected_companies:
-            filtered_df = filtered_df[
-                filtered_df[company_col].isin(selected_companies)
-            ]
 
     return filtered_df
