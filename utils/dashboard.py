@@ -11,7 +11,7 @@ def render_report_header(selected_filters):
     report_shift = selected_filters.get("shift")
     report_time = selected_filters.get("time")
 
-    st.markdown("## Manpower Report")
+    st.markdown("### Manpower Report")
 
     col1, col2, col3 = st.columns(3)
 
@@ -34,12 +34,12 @@ def render_section_header(section_name):
         <div style="
             background-color: {SECTION_HEADER_COLOR};
             color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 20px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 15px;
             font-weight: 700;
-            margin-top: 24px;
-            margin-bottom: 8px;
+            margin-top: 16px;
+            margin-bottom: 6px;
         ">
             {section_name}
         </div>
@@ -57,19 +57,37 @@ def render_report_table(section_df):
     styled_df = (
         section_df.style
         .format({col: "{:,.0f}" for col in numeric_cols})
+        .set_table_styles([
+            {
+                "selector": "th",
+                "props": [
+                    ("font-size", "12px"),
+                    ("font-weight", "700"),
+                    ("text-align", "center"),
+                    ("padding", "3px 6px"),
+                ],
+            },
+            {
+                "selector": "td",
+                "props": [
+                    ("font-size", "12px"),
+                    ("padding", "3px 6px"),
+                ],
+            },
+        ])
         .set_properties(
             subset=["Category"],
             **{
                 "text-align": "left",
                 "font-weight": "500",
-                "min-width": "300px",
+                "min-width": "260px",
             }
         )
         .set_properties(
             subset=numeric_cols,
             **{
                 "text-align": "center",
-                "min-width": "80px",
+                "min-width": "65px",
             }
         )
         .apply(
