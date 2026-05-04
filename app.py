@@ -18,7 +18,7 @@ creds = Credentials.from_service_account_info(
 
 gc = gspread.authorize(creds)
 
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1ZRTbCI0b7q1OjEf5NOn-IZbVgmetqGkF0Koa4xxliI4"
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1ZRTbCI0b7q1OjEf5NOn-IZbVgmetqGkF0Koa4xxliI4/edit?usp=sharing"
 WORKSHEET_NAME = "Day Form Responses"
 
 sheet = gc.open_by_url(SHEET_URL).worksheet(WORKSHEET_NAME)
