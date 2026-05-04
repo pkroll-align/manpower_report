@@ -31,8 +31,7 @@ def apply_filters(df):
     shift_col = find_column(df, [
         "Shift",
         "What shift are you logging?",
-        "Day Shift",
-        "Night Shift"
+        "What shift are you working?"
     ])
 
     time_col = find_column(df, [
@@ -41,7 +40,6 @@ def apply_filters(df):
         "What time are you logging?"
     ])
 
-    # Date filter
     if date_col:
         filtered_df[date_col] = pd.to_datetime(
             filtered_df[date_col],
@@ -69,7 +67,6 @@ def apply_filters(df):
                     (filtered_df[date_col].dt.date <= end_date)
                 ]
 
-    # Shift filter
     if shift_col:
         shift_options = sorted([
             x for x in filtered_df[shift_col].dropna().unique()
@@ -87,7 +84,6 @@ def apply_filters(df):
                 filtered_df[shift_col].isin(selected_shifts)
             ]
 
-    # Time filter
     if time_col:
         time_options = sorted([
             x for x in filtered_df[time_col].dropna().unique()

@@ -22,7 +22,7 @@ def get_google_client():
     creds = get_credentials()
     return gspread.authorize(creds)
 
-# --- Clean duplicate / blank headers ---
+
 def clean_headers(headers):
     clean_headers_list = []
     seen = {}
@@ -40,7 +40,7 @@ def clean_headers(headers):
 
     return clean_headers_list
 
-# --- Only pull A:BV ---
+
 def load_sheet_data(sheet_id, worksheet_name, range_name="A:BV"):
     gc = get_google_client()
 
@@ -54,7 +54,7 @@ def load_sheet_data(sheet_id, worksheet_name, range_name="A:BV"):
 
     df = pd.DataFrame(rows, columns=headers)
 
-    # Remove unwanted source columns: E, AO, AP
+    # Drop unwanted source columns: E, AO, AP
     columns_to_drop = [
         df.columns[4],   # E
         df.columns[40],  # AO

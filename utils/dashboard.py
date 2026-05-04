@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 def render_dashboard(df, filtered_df):
     st.subheader("Dashboard Summary")
 
