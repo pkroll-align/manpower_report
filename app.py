@@ -8,7 +8,6 @@ st.set_page_config(page_title="Manpower Dashboard", layout="wide")
 
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets.readonly",
-    "https://www.googleapis.com/auth/drive.readonly",
 ]
 
 service_account_info = json.loads(st.secrets["gcp_service_account"]["json"])
@@ -23,17 +22,9 @@ gc = gspread.authorize(creds)
 SHEET_ID = "1e-0KRdTZQbQj4HAlJxerF7bHFp2kC3-vZuFIUaVnoGU"
 WORKSHEET_NAME = "Day Form Responses"
 
-st.write("Service account email being used:")
-st.code(service_account_info["client_email"])
-
 st.title("Manpower Dashboard")
 
-spreadsheet = gc.open_by_key(SHEET_ID)
-
-st.subheader("Available worksheets")
-worksheet_names = [ws.title for ws in spreadsheet.worksheets()]
-st.write(worksheet_names)
-
+spreadsheet = gspread.Spreadsheet(gc.http_client, {"id": SHEET_ID})
 sheet = spreadsheet.worksheet(WORKSHEET_NAME)
 
 data = sheet.get_all_records()
