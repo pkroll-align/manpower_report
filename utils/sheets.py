@@ -52,4 +52,15 @@ def load_sheet_data(sheet_id, worksheet_name, range_name="A:BV"):
     headers = clean_headers(values[0])
     rows = values[1:]
 
-    return pd.DataFrame(rows, columns=headers)
+    df = pd.DataFrame(rows, columns=headers)
+
+    # Remove unwanted source columns: E, AO, AP
+    columns_to_drop = [
+        df.columns[4],   # E
+        df.columns[40],  # AO
+        df.columns[41],  # AP
+    ]
+
+    df = df.drop(columns=columns_to_drop)
+
+    return df
