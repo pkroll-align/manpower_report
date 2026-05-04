@@ -27,13 +27,13 @@ st.title("Manpower Dashboard")
 spreadsheet = gspread.Spreadsheet(gc.http_client, {"id": SHEET_ID})
 sheet = spreadsheet.worksheet(WORKSHEET_NAME)
 
-# Load values manually so duplicate headers do not break the app
-values = sheet.get_all_values()
+# --- Only pull A:BV ---
+values = sheet.get("A:BV")
 
 headers = values[0]
 rows = values[1:]
 
-# Clean duplicate and blank headers
+# --- Clean duplicate / blank headers ---
 clean_headers = []
 seen = {}
 
