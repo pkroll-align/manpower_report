@@ -3,15 +3,7 @@ import streamlit as st
 from utils.calculations import build_report_sections
 
 
-SECTION_COLORS = {
-    "Total Manpower": "#1f4e78",
-    "Warehouse": "#5b9bd5",
-    "DH13": "#70ad47",
-    "DH15": "#70ad47",
-    "DH18": "#70ad47",
-    "DH20": "#70ad47",
-    "Supercore": "#8064a2",
-}
+SECTION_HEADER_COLOR = "#1f4e78"
 
 
 def render_report_header(selected_filters):
@@ -37,12 +29,10 @@ def render_report_header(selected_filters):
 
 
 def render_section_header(section_name):
-    color = SECTION_COLORS.get(section_name, "#404040")
-
     st.markdown(
         f"""
         <div style="
-            background-color: {color};
+            background-color: {SECTION_HEADER_COLOR};
             color: white;
             padding: 8px 12px;
             border-radius: 4px;
