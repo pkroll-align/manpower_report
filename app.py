@@ -1,5 +1,5 @@
 import streamlit as st
-from utilities.sheets import load_sheet_data
+from utils.sheets import load_sheet_data
 
 st.set_page_config(page_title="Manpower Dashboard", layout="wide")
 
