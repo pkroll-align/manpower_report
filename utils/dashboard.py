@@ -101,11 +101,7 @@ def render_report_table(section_df):
         )
     )
 
-    st.dataframe(
-        styled_df,
-        use_container_width=True,
-        hide_index=True
-    )
+    st.table(styled_df)
 
 
 def render_dashboard(filtered_df, selected_filters):
