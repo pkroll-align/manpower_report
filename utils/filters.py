@@ -51,7 +51,6 @@ def dedupe_latest_company_entries(df):
         return df
 
     df = df.copy()
-
     df = normalize_text_columns(df)
 
     df[TIMESTAMP_COL] = pd.to_datetime(
@@ -64,19 +63,16 @@ def dedupe_latest_company_entries(df):
         errors="coerce"
     )
 
-    # Drop rows that cannot be used for duplicate logic
     df = df.dropna(subset=[
         TIMESTAMP_COL,
         DATE_COL,
     ])
 
-    # Sort newest first
     df = df.sort_values(
         by=TIMESTAMP_COL,
         ascending=False
     )
 
-    # Keep newest row per company/date/shift/time
     df = df.drop_duplicates(
         subset=[
             COMPANY_COL,
@@ -91,12 +87,10 @@ def dedupe_latest_company_entries(df):
 
 
 def apply_filters(df):
-    # Dedupe FIRST, then apply report filters
     filtered_df = dedupe_latest_company_entries(df)
 
     st.sidebar.header("Filters")
 
-    # Date filter uses Adjusted Date, not Timestamp
     if DATE_COL in filtered_df.columns:
         selected_date = st.sidebar.date_input(
             "Date",
@@ -109,7 +103,6 @@ def apply_filters(df):
     else:
         st.sidebar.warning(f"Missing date column: {DATE_COL}")
 
-    # Shift dropdown
     selected_shift = st.sidebar.selectbox(
         "Shift",
         options=["Day Shift", "Night Shift"]
@@ -122,7 +115,6 @@ def apply_filters(df):
     else:
         st.sidebar.warning(f"Missing shift column: {SHIFT_COL}")
 
-    # Time dropdown based on selected shift
     time_options = DAY_SHIFT_TIMES if selected_shift == "Day Shift" else NIGHT_SHIFT_TIMES
 
     selected_time = st.sidebar.selectbox(

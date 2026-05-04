@@ -90,6 +90,34 @@ LABORER_COLUMNS = [
 ]
 
 
+DH_TASK_ROWS = [
+    ("Leads/Supervisors", "Leads/Supervisors"),
+    ("T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)", "T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)"),
+    ("Patching T1 SMF (AS-T1/R.T1-T2)", "Patching T1 SMF (AS-T1/R.T1-T2)"),
+    ("Patching GPU-T1 CAT6", "Patching GPU-T1 CAT6"),
+    ("Dressing/Patching AEC", "Patching AEC"),
+    ("Dressing/Patching IPMI", "Patching IPMI"),
+    ("Network Row Sidecart dressing SMF", "Network Row Sidecart dressing SMF"),
+    ("Network Row Patching SMF", "Network Row Patching SMF"),
+    ("Dressing/Patching (NA/NB) Mgmt CAT6", "Patching (NA/NB) Mgmt CAT6"),
+    ("QC/Monitoring", "QC/Monitoring"),
+    ("Copper Testing", "Copper Testing"),
+    ("Fiber Testing", "Fiber Testing"),
+]
+
+
+def build_dh_section(prefix):
+    section = {}
+
+    for display_label, source_suffix in DH_TASK_ROWS:
+        if display_label == "Leads/Supervisors":
+            section[display_label] = f"{prefix} Leads/Supervisors"
+        else:
+            section[display_label] = f"{prefix} {source_suffix}"
+
+    return section
+
+
 REPORT_SECTIONS = {
     "Total Manpower": None,
 
@@ -101,65 +129,10 @@ REPORT_SECTIONS = {
         "Staging": "Staging Cable on DH floor for pulls",
     },
 
-    "DH15": {
-        "Leads/Supervisors": "DH15 Leads/Supervisors",
-        "T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)": "DH15 T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
-        "Patching T1 SMF (AS-T1/R.T1-T2)": "DH15 Patching T1 SMF (AS-T1/R.T1-T2)",
-        "Patching GPU-T1 CAT6": "DH15 Patching GPU-T1 CAT6",
-        "Patching AEC": "DH15 Patching AEC",
-        "Patching IPMI": "DH15 Patching IPMI",
-        "Network Row Sidecart Dressing SMF": "DH15 Network Row Sidecart Dressing SMF",
-        "Network Row Patching SMF": "DH15 Network Row Patching SMF",
-        "Patching (NA/NB) Mgmt CAT6": "DH15 Patching (NA/NB) Mgmt CAT6",
-        "QC/Monitoring": "DH15 QC/Monitoring",
-        "Copper Testing": "DH15 Copper Testing",
-        "Fiber Testing": "DH15 Fiber Testing",
-    },
-
-    "DH13": {
-        "Leads/Supervisors": "DH13 Leads/Supervisors",
-        "T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)": "DH13 T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
-        "Patching T1 SMF (AS-T1/R.T1-T2)": "DH13 Patching T1 SMF (AS-T1/R.T1-T2)",
-        "Patching GPU-T1 CAT6": "DH13 Patching GPU-T1 CAT6",
-        "Patching AEC": "DH13 Patching AEC",
-        "Patching IPMI": "DH13 Patching IPMI",
-        "Network Row Sidecart Dressing SMF": "DH13 Network Row Sidecart dressing SMF",
-        "Network Row Patching SMF": "DH13 Network Row Patching SMF",
-        "Patching (NA/NB) Mgmt CAT6": "DH13 Patching (NA/NB) Mgmt CAT6",
-        "QC/Monitoring": "DH13 QC/Monitoring",
-        "Copper Testing": "DH13 Copper Testing",
-        "Fiber Testing": "DH13 Fiber Testing",
-    },
-
-    "DH18": {
-        "Leads/Supervisors": "DH18 Leads/Supervisors",
-        "T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)": "DH18 T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
-        "Patching T1 SMF (AS-T1/R.T1-T2)": "DH18 Patching T1 SMF (AS-T1/R.T1-T2)",
-        "Patching GPU-T1 CAT6": "DH18 Patching GPU-T1 CAT6",
-        "Patching AEC": "DH18 Patching AEC",
-        "Patching IPMI": "DH18 Patching IPMI",
-        "Network Row Sidecart Dressing SMF": "DH18 Network Row Sidecart dressing SMF",
-        "Network Row Patching SMF": "DH18 Network Row Patching SMF",
-        "Patching (NA/NB) Mgmt CAT6": "DH18 Patching (NA/NB) Mgmt CAT6",
-        "QC/Monitoring": "DH18 QC/Monitoring",
-        "Copper Testing": "DH18 Copper Testing",
-        "Fiber Testing": "DH18 Fiber Testing",
-    },
-
-    "DH20": {
-        "Leads/Supervisors": "DH20 Leads/Supervisors",
-        "T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)": "DH20 T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
-        "Patching T1 SMF (AS-T1/R.T1-T2)": "DH20 Patching T1 SMF (AS-T1/R.T1-T2)",
-        "Patching GPU-T1 CAT6": "DH20 Patching GPU-T1 CAT6",
-        "Patching AEC": "DH20 Patching AEC",
-        "Patching IPMI": "DH20 Patching IPMI",
-        "Network Row Sidecart Dressing SMF": "DH20 Network Row Sidecart dressing SMF",
-        "Network Row Patching SMF": "DH20 Network Row Patching SMF",
-        "Patching (NA/NB) Mgmt CAT6": "DH20 Patching (NA/NB) Mgmt CAT6",
-        "QC/Monitoring": "DH20 QC/Monitoring",
-        "Copper Testing": "DH20 Copper Testing",
-        "Fiber Testing": "DH20 Fiber Testing",
-    },
+    "DH15": build_dh_section("DH15"),
+    "DH13": build_dh_section("DH13"),
+    "DH18": build_dh_section("DH18"),
+    "DH20": build_dh_section("DH20"),
 
     "Supercore": {
         "Leads/Supervisors": "SC Leads/Supervisors",
