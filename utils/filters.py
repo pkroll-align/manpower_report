@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+from datetime import date
 
 
 def apply_filters(df):
@@ -12,36 +13,21 @@ def apply_filters(df):
     time_col = "Time"
     shift_col = "Which shift?"
 
-    # Date filter
+    # Single date filter, defaulting to today
     if date_col in filtered_df.columns:
         filtered_df[date_col] = pd.to_datetime(
             filtered_df[date_col],
             errors="coerce"
         )
 
-        valid_dates = filtered_df[date_col].dropna()
+        selected_date = st.sidebar.date_input(
+            "Date",
+            value=date.today()
+        )
 
-        if not valid_dates.empty:
-            min_date = valid_dates.min().date()
-            max_date = valid_dates.max().date()
-
-            selected_date_range = st.sidebar.date_input(
-                "Date range",
-                value=(min_date, max_date),
-                min_value=min_date,
-                max_value=max_date
-            )
-
-            if (
-                isinstance(selected_date_range, tuple)
-                and len(selected_date_range) == 2
-            ):
-                start_date, end_date = selected_date_range
-
-                filtered_df = filtered_df[
-                    (filtered_df[date_col].dt.date >= start_date)
-                    & (filtered_df[date_col].dt.date <= end_date)
-                ]
+        filtered_df = filtered_df[
+            filtered_df[date_col].dt.date == selected_date
+        ]
 
     # Shift filter
     if shift_col in filtered_df.columns:
