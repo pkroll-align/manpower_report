@@ -1,5 +1,7 @@
 import streamlit as st
+
 from utils.sheets import load_sheet_data
+from utils.dashboard import render_dashboard
 
 st.set_page_config(page_title="Manpower Dashboard", layout="wide")
 
@@ -10,7 +12,4 @@ st.title("Manpower Dashboard")
 
 df = load_sheet_data(SHEET_ID, WORKSHEET_NAME)
 
-st.subheader("Raw Data")
-st.dataframe(df, use_container_width=True)
-
-st.write("Rows loaded:", len(df))
+render_dashboard(df)
