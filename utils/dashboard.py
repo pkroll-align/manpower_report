@@ -4,6 +4,8 @@ from utils.calculations import build_report_sections
 
 
 SECTION_HEADER_COLOR = "#003b5c"
+SECTION_HEADER_TEXT = "#ffffff"
+
 TOTAL_ROW_BACKGROUND = "#005f86"
 TOTAL_ROW_TEXT = "#ffffff"
 
@@ -35,7 +37,7 @@ def render_section_header(section_name):
         f"""
         <div style="
             background-color: {SECTION_HEADER_COLOR};
-            color: white;
+            color: {SECTION_HEADER_TEXT};
             padding: 4px 8px;
             border-radius: 3px;
             font-size: 14px;
@@ -63,8 +65,8 @@ def render_report_table(section_df):
             {
                 "selector": "th",
                 "props": [
-                    ("background-color", "#eef3f7"),
-                    ("color", "#003b5c"),
+                    ("background-color", SECTION_HEADER_COLOR),
+                    ("color", "#ffffff"),
                     ("font-size", "10px"),
                     ("font-weight", "700"),
                     ("text-align", "center"),
