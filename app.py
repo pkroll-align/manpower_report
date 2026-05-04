@@ -27,8 +27,32 @@ st.title("Manpower Dashboard")
 spreadsheet = gspread.Spreadsheet(gc.http_client, {"id": SHEET_ID})
 sheet = spreadsheet.worksheet(WORKSHEET_NAME)
 
-data = sheet.get_all_records()
-df = pd.DataFrame(data)
+# --- Only pull A:BV ---
+values = sheet.get("A:BV")
+
+headers = values[0]
+rows = values[1:]
+
+# --- Clean duplicate / blank headers ---
+clean_headers = []
+seen = {}
+
+for h in headers:
+    h = h.strip() if h else "Column"
+
+    if h in seen:
+        seen[h] += 1
+        new_h = f"{h}_{seen[h]}"
+    else:
+        seen[h] = 0
+        new_h = h
+
+    clean_headers.append(new_h)
+
+df = pd.DataFrame(rows, columns=clean_headers)
+
+st.subheader("Column Headers")
+st.write(clean_headers)
 
 st.subheader("Raw Data")
 st.dataframe(df, use_container_width=True)
