@@ -24,12 +24,7 @@ def get_summary_metrics(df, filtered_df):
 
 def get_company_summary(filtered_df):
     company_col = find_column(filtered_df, [
-        "Company",
-        "Contractor",
-        "Vendor",
-        "B",
-        "What company are you logging?",
-        "What company are you working for?"
+        "Company:"
     ])
 
     if company_col is None:
