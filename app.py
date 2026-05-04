@@ -18,11 +18,10 @@ creds = Credentials.from_service_account_info(
 
 gc = gspread.authorize(creds)
 
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1ZRTbCI0b7q1OjEf5NOn-IZbVgmetqGkF0Koa4xxliI4/edit?usp=sharing"
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1e-0KRdTZQbQj4HAlJxerF7bHFp2kC3-vZuFIUaVnoGU/edit?usp=sharing"
 WORKSHEET_NAME = "Day Form Responses"
 
-SHEET_ID = "1ZRTbCI0b7q1OjEf5NOn-IZbVgmetqGkF0Koa4xxliI4"
-sheet = gc.open_by_key(SHEET_ID).worksheet(WORKSHEET_NAME)
+sheet = gc.open_by_url(SHEET_URL).worksheet(WORKSHEET_NAME)
 
 data = sheet.get_all_records()
 df = pd.DataFrame(data)
