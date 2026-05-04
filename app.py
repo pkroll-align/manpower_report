@@ -15,4 +15,4 @@ df = load_sheet_data(SHEET_ID, WORKSHEET_NAME)
 
 filtered_df = apply_filters(df)
 
-render_dashboard(df, filtered_df)
+render_dashboard(filtered_df)

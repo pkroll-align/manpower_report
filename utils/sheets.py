@@ -41,7 +41,7 @@ def clean_headers(headers):
     return clean_headers_list
 
 
-def load_sheet_data(sheet_id, worksheet_name, range_name="A:BV"):
+def load_sheet_data(sheet_id, worksheet_name, range_name="A:BT"):
     gc = get_google_client()
 
     spreadsheet = gspread.Spreadsheet(gc.http_client, {"id": sheet_id})
@@ -55,10 +55,13 @@ def load_sheet_data(sheet_id, worksheet_name, range_name="A:BV"):
     df = pd.DataFrame(rows, columns=headers)
 
     # Drop unwanted source columns: E, AO, AP
+    # E  = index 4
+    # AO = index 40
+    # AP = index 41
     columns_to_drop = [
-        df.columns[4],   # E
-        df.columns[40],  # AO
-        df.columns[41],  # AP
+        df.columns[4],
+        df.columns[40],
+        df.columns[41],
     ]
 
     df = df.drop(columns=columns_to_drop)
