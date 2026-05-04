@@ -3,6 +3,21 @@ import streamlit as st
 from datetime import date
 
 
+DAY_SHIFT_TIMES = [
+    "9:00 AM",
+    "12:00 PM",
+    "3:00 PM",
+    "6:00 PM",
+]
+
+NIGHT_SHIFT_TIMES = [
+    "9:00 PM",
+    "12:00 AM",
+    "3:00 AM",
+    "6:00 AM",
+]
+
+
 def apply_filters(df):
     filtered_df = df.copy()
 
@@ -13,7 +28,7 @@ def apply_filters(df):
     time_col = "Time"
     shift_col = "Which shift?"
 
-    # Single date filter, defaulting to today
+    # Date filter: single day, default today
     if date_col in filtered_df.columns:
         filtered_df[date_col] = pd.to_datetime(
             filtered_df[date_col],
@@ -29,52 +44,32 @@ def apply_filters(df):
             filtered_df[date_col].dt.date == selected_date
         ]
 
-    # Shift filter
+    # Shift dropdown
+    selected_shift = st.sidebar.selectbox(
+        "Shift",
+        options=["Day Shift", "Night Shift"]
+    )
+
     if shift_col in filtered_df.columns:
-        shift_options = sorted([
-            x for x in filtered_df[shift_col].dropna().unique()
-            if str(x).strip() != ""
-        ])
+        filtered_df = filtered_df[
+            filtered_df[shift_col] == selected_shift
+        ]
 
-        selected_shifts = st.sidebar.multiselect(
-            "Shift",
-            options=shift_options,
-            default=shift_options
-        )
+    # Time dropdown changes based on selected shift
+    if selected_shift == "Day Shift":
+        time_options = DAY_SHIFT_TIMES
+    else:
+        time_options = NIGHT_SHIFT_TIMES
 
-        if selected_shifts:
-            filtered_df = filtered_df[
-                filtered_df[shift_col].isin(selected_shifts)
-            ]
+    selected_time = st.sidebar.selectbox(
+        "Time",
+        options=time_options
+    )
 
-    # Time filter
     if time_col in filtered_df.columns:
-        time_options = [
-            "9:00 AM",
-            "12:00 PM",
-            "3:00 PM",
-            "6:00 PM",
-            "9:00 PM",
-            "12:00 AM",
-            "3:00 AM",
-            "6:00 AM",
+        filtered_df = filtered_df[
+            filtered_df[time_col] == selected_time
         ]
-
-        available_times = [
-            t for t in time_options
-            if t in filtered_df[time_col].dropna().unique()
-        ]
-
-        selected_times = st.sidebar.multiselect(
-            "Time",
-            options=available_times,
-            default=available_times
-        )
-
-        if selected_times:
-            filtered_df = filtered_df[
-                filtered_df[time_col].isin(selected_times)
-            ]
 
     # Company filter
     if company_col in filtered_df.columns:
