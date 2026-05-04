@@ -52,7 +52,7 @@ for h in headers:
 df = pd.DataFrame(rows, columns=clean_headers)
 
 warehouse_cols = df.columns[[5,6,7,8,9,67]]
-df[warehouse_cols] = df[warehouse_cols].apply(pd.to_numeric),errors="coerce").fillna(0)
+df[warehouse_cols] = df[warehouse_cols].apply(pd.to_numeric, errors="coerce").fillna(0)
 df["Warehouse"] = df[warehouse_cols].sum(axis=1)
 st.metric("Total Warehouse", int(df["Warehouse"].sum()))
 
