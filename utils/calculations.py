@@ -36,19 +36,6 @@ LABORER_COLUMNS = [
     "SC SMF QC/Monitoring",
     "SC SMF Testing",
 
-    # DH15
-    "DH15 T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
-    "DH15 Patching T1 SMF (AS-T1/R.T1-T2)",
-    "DH15 Patching GPU-T1 CAT6",
-    "DH15 Patching AEC",
-    "DH15 Patching IPMI",
-    "DH15 Network Row Sidecart Dressing SMF",
-    "DH15 Network Row Patching SMF",
-    "DH15 Patching (NA/NB) Mgmt CAT6",
-    "DH15 QC/Monitoring",
-    "DH15 Copper Testing",
-    "DH15 Fiber Testing",
-
     # DH13
     "DH13 T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
     "DH13 Patching T1 SMF (AS-T1/R.T1-T2)",
@@ -61,6 +48,19 @@ LABORER_COLUMNS = [
     "DH13 QC/Monitoring",
     "DH13 Copper Testing",
     "DH13 Fiber Testing",
+
+    # DH15
+    "DH15 T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
+    "DH15 Patching T1 SMF (AS-T1/R.T1-T2)",
+    "DH15 Patching GPU-T1 CAT6",
+    "DH15 Patching AEC",
+    "DH15 Patching IPMI",
+    "DH15 Network Row Sidecart Dressing SMF",
+    "DH15 Network Row Patching SMF",
+    "DH15 Patching (NA/NB) Mgmt CAT6",
+    "DH15 QC/Monitoring",
+    "DH15 Copper Testing",
+    "DH15 Fiber Testing",
 
     # DH18
     "DH18 T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
@@ -129,8 +129,8 @@ REPORT_SECTIONS = {
         "Staging": "Staging Cable on DH floor for pulls",
     },
 
-    "DH15": build_dh_section("DH15"),
     "DH13": build_dh_section("DH13"),
+    "DH15": build_dh_section("DH15"),
     "DH18": build_dh_section("DH18"),
     "DH20": build_dh_section("DH20"),
 
