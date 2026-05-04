@@ -3,12 +3,9 @@ import streamlit as st
 from utils.calculations import build_report_sections
 
 
-SECTION_HEADER_COLOR = "#003b5c"
-
-TABLE_HEADER_BACKGROUND = "#003b5c"
-TABLE_BODY_BACKGROUND = "#1f4e78"
-TABLE_TOTAL_BACKGROUND = "#005f86"
-TABLE_TEXT_COLOR = "#ffffff"
+SECTION_HEADER_COLOR = "#1f4e78"
+TOTAL_ROW_BACKGROUND = "#404040"
+TOTAL_ROW_TEXT = "#ffffff"
 
 
 def render_report_header(selected_filters):
@@ -38,7 +35,7 @@ def render_section_header(section_name):
         f"""
         <div style="
             background-color: {SECTION_HEADER_COLOR};
-            color: {TABLE_TEXT_COLOR};
+            color: white;
             padding: 4px 8px;
             border-radius: 3px;
             font-size: 14px;
@@ -66,25 +63,19 @@ def render_report_table(section_df):
             {
                 "selector": "th",
                 "props": [
-                    ("background-color", TABLE_HEADER_BACKGROUND),
-                    ("color", TABLE_TEXT_COLOR),
                     ("font-size", "10px"),
                     ("font-weight", "700"),
                     ("text-align", "center"),
                     ("padding", "2px 4px"),
                     ("white-space", "normal"),
-                    ("border", "1px solid #2f6f91"),
                 ],
             },
             {
                 "selector": "td",
                 "props": [
-                    ("background-color", TABLE_BODY_BACKGROUND),
-                    ("color", TABLE_TEXT_COLOR),
                     ("font-size", "10px"),
                     ("padding", "2px 4px"),
                     ("line-height", "1.1"),
-                    ("border", "1px solid #2f6f91"),
                 ],
             },
         ])
@@ -96,8 +87,6 @@ def render_report_table(section_df):
                 "min-width": "230px",
                 "max-width": "260px",
                 "white-space": "normal",
-                "color": TABLE_TEXT_COLOR,
-                "background-color": TABLE_BODY_BACKGROUND,
             }
         )
         .set_properties(
@@ -106,16 +95,14 @@ def render_report_table(section_df):
                 "text-align": "center",
                 "min-width": "48px",
                 "max-width": "60px",
-                "color": TABLE_TEXT_COLOR,
-                "background-color": TABLE_BODY_BACKGROUND,
             }
         )
         .apply(
             lambda row: [
                 (
                     f"font-weight: bold; "
-                    f"background-color: {TABLE_TOTAL_BACKGROUND}; "
-                    f"color: {TABLE_TEXT_COLOR};"
+                    f"background-color: {TOTAL_ROW_BACKGROUND}; "
+                    f"color: {TOTAL_ROW_TEXT};"
                 )
                 if row["Category"] == "TOTAL"
                 else ""
