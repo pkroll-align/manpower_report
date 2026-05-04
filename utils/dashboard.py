@@ -32,6 +32,14 @@ def render_dashboard(filtered_df):
 
     with st.expander("Filtered raw data"):
         st.dataframe(filtered_df, use_container_width=True, hide_index=True)
+        
+        with st.expander("Debug - rows used in report"):
+    st.write("Rows used:", len(filtered_df))
+    st.dataframe(
+        filtered_df[["Timestamp", "Adjusted Date", "Company:", "Which shift?", "Time"]],
+        use_container_width=True,
+        hide_index=True
+    )
 
     with st.expander("Column names"):
         st.write(list(filtered_df.columns))

@@ -25,7 +25,17 @@ NIGHT_SHIFT_TIMES = [
 ]
 
 
-def keep_latest_company_entries(df):
+def normalize_text_columns(df):
+    df = df.copy()
+
+    for col in [COMPANY_COL, TIME_COL, SHIFT_COL]:
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+
+    return df
+
+
+def dedupe_latest_company_entries(df):
     required_cols = [
         TIMESTAMP_COL,
         COMPANY_COL,
@@ -34,23 +44,40 @@ def keep_latest_company_entries(df):
         TIME_COL,
     ]
 
-    for col in required_cols:
-        if col not in df.columns:
-            return df
+    missing_cols = [col for col in required_cols if col not in df.columns]
 
-    filtered_df = df.copy()
+    if missing_cols:
+        st.warning(f"Cannot dedupe. Missing columns: {missing_cols}")
+        return df
 
-    filtered_df[TIMESTAMP_COL] = pd.to_datetime(
-        filtered_df[TIMESTAMP_COL],
+    df = df.copy()
+
+    df = normalize_text_columns(df)
+
+    df[TIMESTAMP_COL] = pd.to_datetime(
+        df[TIMESTAMP_COL],
         errors="coerce"
     )
 
-    filtered_df = filtered_df.sort_values(
+    df[DATE_COL] = pd.to_datetime(
+        df[DATE_COL],
+        errors="coerce"
+    )
+
+    # Drop rows that cannot be used for duplicate logic
+    df = df.dropna(subset=[
+        TIMESTAMP_COL,
+        DATE_COL,
+    ])
+
+    # Sort newest first
+    df = df.sort_values(
         by=TIMESTAMP_COL,
         ascending=False
     )
 
-    filtered_df = filtered_df.drop_duplicates(
+    # Keep newest row per company/date/shift/time
+    df = df.drop_duplicates(
         subset=[
             COMPANY_COL,
             DATE_COL,
@@ -60,21 +87,17 @@ def keep_latest_company_entries(df):
         keep="first"
     )
 
-    return filtered_df
+    return df
 
 
 def apply_filters(df):
-    filtered_df = df.copy()
+    # Dedupe FIRST, then apply report filters
+    filtered_df = dedupe_latest_company_entries(df)
 
     st.sidebar.header("Filters")
 
     # Date filter uses Adjusted Date, not Timestamp
     if DATE_COL in filtered_df.columns:
-        filtered_df[DATE_COL] = pd.to_datetime(
-            filtered_df[DATE_COL],
-            errors="coerce"
-        )
-
         selected_date = st.sidebar.date_input(
             "Date",
             value=date.today()
@@ -113,8 +136,5 @@ def apply_filters(df):
         ]
     else:
         st.sidebar.warning(f"Missing time column: {TIME_COL}")
-
-    # Keep only newest entry per company/date/shift/time
-    filtered_df = keep_latest_company_entries(filtered_df)
 
     return filtered_df
