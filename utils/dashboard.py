@@ -3,9 +3,7 @@ import streamlit as st
 from utils.calculations import build_report_sections
 
 
-SECTION_HEADER_COLOR = "#003b5c"
-TOTAL_ROW_BACKGROUND = "#005f86"
-TOTAL_ROW_TEXT = "#ffffff"
+SECTION_HEADER_COLOR = "#1f4e78"
 
 
 def render_report_header(selected_filters):
@@ -36,12 +34,12 @@ def render_section_header(section_name):
         <div style="
             background-color: {SECTION_HEADER_COLOR};
             color: white;
-            padding: 4px 8px;
+            padding: 5px 10px;
             border-radius: 3px;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
-            margin-top: 14px;
-            margin-bottom: 5px;
+            margin-top: 16px;
+            margin-bottom: 6px;
         ">
             {section_name}
         </div>
@@ -50,7 +48,7 @@ def render_section_header(section_name):
     )
 
 
-def style_report_table(section_df, is_total=False):
+def render_report_table(section_df):
     numeric_cols = [
         col for col in section_df.columns
         if col != "Category"
@@ -63,23 +61,17 @@ def style_report_table(section_df, is_total=False):
             {
                 "selector": "th",
                 "props": [
-                    ("background-color", "#eef3f7"),
-                    ("color", "#003b5c"),
-                    ("font-size", "10px"),
+                    ("font-size", "12px"),
                     ("font-weight", "700"),
                     ("text-align", "center"),
-                    ("padding", "2px 4px"),
-                    ("white-space", "normal"),
-                    ("border-bottom", "1px solid #cfd8df"),
+                    ("padding", "3px 6px"),
                 ],
             },
             {
                 "selector": "td",
                 "props": [
-                    ("font-size", "10px"),
-                    ("padding", "2px 4px"),
-                    ("line-height", "1.1"),
-                    ("border-bottom", "1px solid #edf1f5"),
+                    ("font-size", "12px"),
+                    ("padding", "3px 6px"),
                 ],
             },
         ])
@@ -87,59 +79,29 @@ def style_report_table(section_df, is_total=False):
             subset=["Category"],
             **{
                 "text-align": "left",
-                "font-weight": "700" if is_total else "500",
-                "min-width": "230px",
-                "max-width": "260px",
-                "white-space": "normal",
-                "color": TOTAL_ROW_TEXT if is_total else "#1f2d3d",
-                "background-color": TOTAL_ROW_BACKGROUND if is_total else "transparent",
+                "font-weight": "500",
+                "min-width": "260px",
             }
         )
         .set_properties(
             subset=numeric_cols,
             **{
                 "text-align": "center",
-                "font-weight": "700" if is_total else "400",
-                "min-width": "48px",
-                "max-width": "60px",
-                "color": TOTAL_ROW_TEXT if is_total else "#1f2d3d",
-                "background-color": TOTAL_ROW_BACKGROUND if is_total else "transparent",
+                "min-width": "65px",
             }
         )
-    )
-
-    if is_total:
-        styled_df = styled_df.apply(
+        .apply(
             lambda row: [
-                (
-                    f"font-weight: bold; "
-                    f"background-color: {TOTAL_ROW_BACKGROUND}; "
-                    f"color: {TOTAL_ROW_TEXT};"
-                )
+                "font-weight: bold; background-color: #d9d9d9;"
+                if row["Category"] == "TOTAL"
+                else ""
                 for _ in row
             ],
             axis=1
         )
-
-    return styled_df
-
-
-def render_report_table(section_df):
-    normal_rows = section_df[section_df["Category"] != "TOTAL"].copy()
-    total_row = section_df[section_df["Category"] == "TOTAL"].copy()
-
-    st.dataframe(
-        style_report_table(normal_rows),
-        use_container_width=True,
-        hide_index=True
     )
 
-    if not total_row.empty:
-        st.dataframe(
-            style_report_table(total_row, is_total=True),
-            use_container_width=True,
-            hide_index=True
-        )
+    st.table(styled_df)
 
 
 def render_dashboard(filtered_df, selected_filters):
