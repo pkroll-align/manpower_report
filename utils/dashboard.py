@@ -4,10 +4,11 @@ from utils.calculations import build_report_sections
 
 
 SECTION_HEADER_COLOR = "#003b5c"
-SECTION_HEADER_TEXT = "#ffffff"
 
-TOTAL_ROW_BACKGROUND = "#005f86"
-TOTAL_ROW_TEXT = "#ffffff"
+TABLE_HEADER_BACKGROUND = "#003b5c"
+TABLE_BODY_BACKGROUND = "#1f4e78"
+TABLE_TOTAL_BACKGROUND = "#005f86"
+TABLE_TEXT_COLOR = "#ffffff"
 
 
 def render_report_header(selected_filters):
@@ -37,7 +38,7 @@ def render_section_header(section_name):
         f"""
         <div style="
             background-color: {SECTION_HEADER_COLOR};
-            color: {SECTION_HEADER_TEXT};
+            color: {TABLE_TEXT_COLOR};
             padding: 4px 8px;
             border-radius: 3px;
             font-size: 14px;
@@ -65,23 +66,25 @@ def render_report_table(section_df):
             {
                 "selector": "th",
                 "props": [
-                    ("background-color", SECTION_HEADER_COLOR),
-                    ("color", "#ffffff"),
+                    ("background-color", TABLE_HEADER_BACKGROUND),
+                    ("color", TABLE_TEXT_COLOR),
                     ("font-size", "10px"),
                     ("font-weight", "700"),
                     ("text-align", "center"),
                     ("padding", "2px 4px"),
                     ("white-space", "normal"),
-                    ("border-bottom", "1px solid #cfd8df"),
+                    ("border", "1px solid #2f6f91"),
                 ],
             },
             {
                 "selector": "td",
                 "props": [
+                    ("background-color", TABLE_BODY_BACKGROUND),
+                    ("color", TABLE_TEXT_COLOR),
                     ("font-size", "10px"),
                     ("padding", "2px 4px"),
                     ("line-height", "1.1"),
-                    ("border-bottom", "1px solid #edf1f5"),
+                    ("border", "1px solid #2f6f91"),
                 ],
             },
         ])
@@ -93,7 +96,8 @@ def render_report_table(section_df):
                 "min-width": "230px",
                 "max-width": "260px",
                 "white-space": "normal",
-                "color": "#1f2d3d",
+                "color": TABLE_TEXT_COLOR,
+                "background-color": TABLE_BODY_BACKGROUND,
             }
         )
         .set_properties(
@@ -102,15 +106,16 @@ def render_report_table(section_df):
                 "text-align": "center",
                 "min-width": "48px",
                 "max-width": "60px",
-                "color": "#1f2d3d",
+                "color": TABLE_TEXT_COLOR,
+                "background-color": TABLE_BODY_BACKGROUND,
             }
         )
         .apply(
             lambda row: [
                 (
                     f"font-weight: bold; "
-                    f"background-color: {TOTAL_ROW_BACKGROUND}; "
-                    f"color: {TOTAL_ROW_TEXT};"
+                    f"background-color: {TABLE_TOTAL_BACKGROUND}; "
+                    f"color: {TABLE_TEXT_COLOR};"
                 )
                 if row["Category"] == "TOTAL"
                 else ""
