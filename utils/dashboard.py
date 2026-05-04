@@ -48,40 +48,38 @@ def render_section_header(section_name):
     )
 
 
-def style_report_table(section_df, is_total=False):
+def render_report_table(section_df):
     numeric_cols = [
         col for col in section_df.columns
         if col != "Category"
     ]
 
-    base_styles = [
-        {
-            "selector": "th",
-            "props": [
-                ("font-size", "12px"),
-                ("font-weight", "700"),
-                ("text-align", "center"),
-                ("padding", "3px 6px"),
-            ],
-        },
-        {
-            "selector": "td",
-            "props": [
-                ("font-size", "12px"),
-                ("padding", "3px 6px"),
-            ],
-        },
-    ]
-
     styled_df = (
         section_df.style
         .format({col: "{:,.0f}" for col in numeric_cols})
-        .set_table_styles(base_styles)
+        .set_table_styles([
+            {
+                "selector": "th",
+                "props": [
+                    ("font-size", "12px"),
+                    ("font-weight", "700"),
+                    ("text-align", "center"),
+                    ("padding", "3px 6px"),
+                ],
+            },
+            {
+                "selector": "td",
+                "props": [
+                    ("font-size", "12px"),
+                    ("padding", "3px 6px"),
+                ],
+            },
+        ])
         .set_properties(
             subset=["Category"],
             **{
                 "text-align": "left",
-                "font-weight": "700" if is_total else "500",
+                "font-weight": "500",
                 "min-width": "260px",
             }
         )
@@ -89,40 +87,25 @@ def style_report_table(section_df, is_total=False):
             subset=numeric_cols,
             **{
                 "text-align": "center",
-                "font-weight": "700" if is_total else "400",
                 "min-width": "65px",
             }
         )
-    )
-
-    if is_total:
-        styled_df = styled_df.apply(
+        .apply(
             lambda row: [
                 "font-weight: bold; background-color: #d9d9d9;"
+                if row["Category"] == "TOTAL"
+                else ""
                 for _ in row
             ],
             axis=1
         )
-
-    return styled_df
-
-
-def render_report_table(section_df):
-    normal_rows = section_df[section_df["Category"] != "TOTAL"].copy()
-    total_row = section_df[section_df["Category"] == "TOTAL"].copy()
+    )
 
     st.dataframe(
-        style_report_table(normal_rows),
+        styled_df,
         use_container_width=True,
         hide_index=True
     )
-
-    if not total_row.empty:
-        st.dataframe(
-            style_report_table(total_row, is_total=True),
-            use_container_width=True,
-            hide_index=True
-        )
 
 
 def render_dashboard(filtered_df, selected_filters):
