@@ -12,6 +12,7 @@ WORKSHEET_NAME = "Day Form Responses"
 st.title("Manpower Dashboard")
 
 df = load_sheet_data(SHEET_ID, WORKSHEET_NAME)
+
 filtered_df = apply_filters(df)
 
 render_dashboard(filtered_df)
