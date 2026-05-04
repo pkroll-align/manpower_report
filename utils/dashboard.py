@@ -1,13 +1,18 @@
 import streamlit as st
 
+def render_dashboard(df, filtered_df):
+    st.subheader("Dashboard Summary")
 
-def render_dashboard(df):
-    st.subheader("Dashboard")
+    col1, col2 = st.columns(2)
 
-    st.write("Rows loaded:", len(df))
+    with col1:
+        st.metric("Total Rows", len(df))
 
-    with st.expander("View raw data", expanded=False):
-        st.dataframe(df, use_container_width=True)
+    with col2:
+        st.metric("Filtered Rows", len(filtered_df))
 
-    st.subheader("Available Columns")
-    st.write(list(df.columns))
+    st.subheader("Filtered Data")
+    st.dataframe(filtered_df, use_container_width=True)
+
+    with st.expander("Column names"):
+        st.write(list(df.columns))
