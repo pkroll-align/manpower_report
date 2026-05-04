@@ -3,6 +3,25 @@ import streamlit as st
 from utils.calculations import build_report_sections
 
 
+def render_report_header(selected_filters):
+    report_date = selected_filters.get("date")
+    report_shift = selected_filters.get("shift")
+    report_time = selected_filters.get("time")
+
+    st.markdown("## Manpower Report")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("Date", report_date.strftime("%m/%d/%Y") if report_date else "")
+
+    with col2:
+        st.metric("Shift", report_shift)
+
+    with col3:
+        st.metric("Time", report_time)
+
+
 def render_report_table(section_df):
     styled_df = section_df.style.apply(
         lambda row: [
@@ -21,8 +40,8 @@ def render_report_table(section_df):
     )
 
 
-def render_dashboard(filtered_df):
-    st.subheader("Report Summary")
+def render_dashboard(filtered_df, selected_filters):
+    render_report_header(selected_filters)
 
     sections = build_report_sections(filtered_df)
 
