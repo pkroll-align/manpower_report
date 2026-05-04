@@ -3,8 +3,8 @@ import streamlit as st
 from utils.calculations import build_report_sections
 
 
-SECTION_HEADER_COLOR = "#1f4e78"
-TOTAL_ROW_BACKGROUND = "#404040"
+SECTION_HEADER_COLOR = "#003b5c"
+TOTAL_ROW_BACKGROUND = "#005f86"
 TOTAL_ROW_TEXT = "#ffffff"
 
 
@@ -63,11 +63,14 @@ def render_report_table(section_df):
             {
                 "selector": "th",
                 "props": [
+                    ("background-color", "#eef3f7"),
+                    ("color", "#003b5c"),
                     ("font-size", "10px"),
                     ("font-weight", "700"),
                     ("text-align", "center"),
                     ("padding", "2px 4px"),
                     ("white-space", "normal"),
+                    ("border-bottom", "1px solid #cfd8df"),
                 ],
             },
             {
@@ -76,6 +79,7 @@ def render_report_table(section_df):
                     ("font-size", "10px"),
                     ("padding", "2px 4px"),
                     ("line-height", "1.1"),
+                    ("border-bottom", "1px solid #edf1f5"),
                 ],
             },
         ])
@@ -87,6 +91,7 @@ def render_report_table(section_df):
                 "min-width": "230px",
                 "max-width": "260px",
                 "white-space": "normal",
+                "color": "#1f2d3d",
             }
         )
         .set_properties(
@@ -95,6 +100,7 @@ def render_report_table(section_df):
                 "text-align": "center",
                 "min-width": "48px",
                 "max-width": "60px",
+                "color": "#1f2d3d",
             }
         )
         .apply(
