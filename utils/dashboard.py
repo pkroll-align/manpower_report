@@ -30,16 +30,34 @@ def render_dashboard(filtered_df):
         st.markdown(f"### {section_name}")
         render_report_table(section_df)
 
+    with st.expander("Debug - rows used in report"):
+        st.write("Rows used:", len(filtered_df))
+
+        debug_cols = [
+            "Timestamp",
+            "Adjusted Date",
+            "Company:",
+            "Which shift?",
+            "Time",
+        ]
+
+        available_debug_cols = [
+            col for col in debug_cols
+            if col in filtered_df.columns
+        ]
+
+        st.dataframe(
+            filtered_df[available_debug_cols],
+            use_container_width=True,
+            hide_index=True
+        )
+
     with st.expander("Filtered raw data"):
-        st.dataframe(filtered_df, use_container_width=True, hide_index=True)
-        
-        with st.expander("Debug - rows used in report"):
-    st.write("Rows used:", len(filtered_df))
-    st.dataframe(
-        filtered_df[["Timestamp", "Adjusted Date", "Company:", "Which shift?", "Time"]],
-        use_container_width=True,
-        hide_index=True
-    )
+        st.dataframe(
+            filtered_df,
+            use_container_width=True,
+            hide_index=True
+        )
 
     with st.expander("Column names"):
         st.write(list(filtered_df.columns))
