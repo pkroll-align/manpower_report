@@ -3,8 +3,8 @@ import streamlit as st
 from utils.calculations import build_report_sections
 
 
-SECTION_HEADER_COLOR = "#1f4e78"
-TOTAL_ROW_BACKGROUND = "#404040"
+SECTION_HEADER_COLOR = "#003b5c"
+TOTAL_ROW_BACKGROUND = "#005f86"
 TOTAL_ROW_TEXT = "#ffffff"
 
 
@@ -50,7 +50,7 @@ def render_section_header(section_name):
     )
 
 
-def render_report_table(section_df):
+def style_report_table(section_df, is_total=False):
     numeric_cols = [
         col for col in section_df.columns
         if col != "Category"
@@ -63,11 +63,14 @@ def render_report_table(section_df):
             {
                 "selector": "th",
                 "props": [
+                    ("background-color", "#eef3f7"),
+                    ("color", "#003b5c"),
                     ("font-size", "10px"),
                     ("font-weight", "700"),
                     ("text-align", "center"),
                     ("padding", "2px 4px"),
                     ("white-space", "normal"),
+                    ("border-bottom", "1px solid #cfd8df"),
                 ],
             },
             {
@@ -76,6 +79,7 @@ def render_report_table(section_df):
                     ("font-size", "10px"),
                     ("padding", "2px 4px"),
                     ("line-height", "1.1"),
+                    ("border-bottom", "1px solid #edf1f5"),
                 ],
             },
         ])
@@ -83,40 +87,59 @@ def render_report_table(section_df):
             subset=["Category"],
             **{
                 "text-align": "left",
-                "font-weight": "500",
+                "font-weight": "700" if is_total else "500",
                 "min-width": "230px",
                 "max-width": "260px",
                 "white-space": "normal",
+                "color": TOTAL_ROW_TEXT if is_total else "#1f2d3d",
+                "background-color": TOTAL_ROW_BACKGROUND if is_total else "transparent",
             }
         )
         .set_properties(
             subset=numeric_cols,
             **{
                 "text-align": "center",
+                "font-weight": "700" if is_total else "400",
                 "min-width": "48px",
                 "max-width": "60px",
+                "color": TOTAL_ROW_TEXT if is_total else "#1f2d3d",
+                "background-color": TOTAL_ROW_BACKGROUND if is_total else "transparent",
             }
         )
-        .apply(
+    )
+
+    if is_total:
+        styled_df = styled_df.apply(
             lambda row: [
                 (
                     f"font-weight: bold; "
                     f"background-color: {TOTAL_ROW_BACKGROUND}; "
                     f"color: {TOTAL_ROW_TEXT};"
                 )
-                if row["Category"] == "TOTAL"
-                else ""
                 for _ in row
             ],
             axis=1
         )
-    )
+
+    return styled_df
+
+
+def render_report_table(section_df):
+    normal_rows = section_df[section_df["Category"] != "TOTAL"].copy()
+    total_row = section_df[section_df["Category"] == "TOTAL"].copy()
 
     st.dataframe(
-        styled_df,
+        style_report_table(normal_rows),
         use_container_width=True,
         hide_index=True
     )
+
+    if not total_row.empty:
+        st.dataframe(
+            style_report_table(total_row, is_total=True),
+            use_container_width=True,
+            hide_index=True
+        )
 
 
 def render_dashboard(filtered_df, selected_filters):
