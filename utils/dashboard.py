@@ -1,6 +1,6 @@
 import streamlit as st
 
-from utils.calculations import get_summary_metrics
+from utils.calculations import get_summary_metrics, get_count_by_column
 
 
 def render_dashboard(df, filtered_df):
