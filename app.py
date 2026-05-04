@@ -13,6 +13,6 @@ st.title("Manpower Dashboard")
 
 df = load_sheet_data(SHEET_ID, WORKSHEET_NAME)
 
-filtered_df = apply_filters(df)
+filtered_df, selected_filters = apply_filters(df)
 
-render_dashboard(filtered_df)
+render_dashboard(filtered_df, selected_filters)

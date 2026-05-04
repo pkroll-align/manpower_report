@@ -91,6 +91,8 @@ def apply_filters(df):
 
     st.sidebar.header("Filters")
 
+    selected_date = date.today()
+
     if DATE_COL in filtered_df.columns:
         selected_date = st.sidebar.date_input(
             "Date",
@@ -129,4 +131,10 @@ def apply_filters(df):
     else:
         st.sidebar.warning(f"Missing time column: {TIME_COL}")
 
-    return filtered_df
+    selected_filters = {
+        "date": selected_date,
+        "shift": selected_shift,
+        "time": selected_time,
+    }
+
+    return filtered_df, selected_filters
