@@ -34,12 +34,12 @@ def render_section_header(section_name):
         <div style="
             background-color: {SECTION_HEADER_COLOR};
             color: white;
-            padding: 4px 8px;
+            padding: 5px 10px;
             border-radius: 3px;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
-            margin-top: 14px;
-            margin-bottom: 5px;
+            margin-top: 16px;
+            margin-bottom: 6px;
         ">
             {section_name}
         </div>
@@ -61,19 +61,17 @@ def render_report_table(section_df):
             {
                 "selector": "th",
                 "props": [
-                    ("font-size", "10px"),
+                    ("font-size", "12px"),
                     ("font-weight", "700"),
                     ("text-align", "center"),
-                    ("padding", "2px 4px"),
-                    ("white-space", "normal"),
+                    ("padding", "3px 6px"),
                 ],
             },
             {
                 "selector": "td",
                 "props": [
-                    ("font-size", "10px"),
-                    ("padding", "2px 4px"),
-                    ("line-height", "1.1"),
+                    ("font-size", "12px"),
+                    ("padding", "3px 6px"),
                 ],
             },
         ])
@@ -82,17 +80,14 @@ def render_report_table(section_df):
             **{
                 "text-align": "left",
                 "font-weight": "500",
-                "min-width": "230px",
-                "max-width": "260px",
-                "white-space": "normal",
+                "min-width": "260px",
             }
         )
         .set_properties(
             subset=numeric_cols,
             **{
                 "text-align": "center",
-                "min-width": "48px",
-                "max-width": "60px",
+                "min-width": "65px",
             }
         )
         .apply(
@@ -106,11 +101,7 @@ def render_report_table(section_df):
         )
     )
 
-    st.dataframe(
-        styled_df,
-        use_container_width=True,
-        hide_index=True
-    )
+    st.table(styled_df)
 
 
 def render_dashboard(filtered_df, selected_filters):
