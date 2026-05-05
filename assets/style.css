@@ -61,7 +61,8 @@ body {
     background: #003b5c;
     color: #ffffff;
     padding: 6px 10px;
-    border-radius: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;	
     font-size: 14px;
     font-weight: 700;
     margin-bottom: 0px;
