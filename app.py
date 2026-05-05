@@ -29,13 +29,20 @@ def build_report_table(section_df):
     for _, row in section_df.iterrows():
         is_total = row["Category"] == "TOTAL"
 
+        cells = []
+
+        for col in section_df.columns:
+            if col == "Category":
+                cells.append(html.Td(row[col]))
+            else:
+                try:
+                    cells.append(html.Td(f"{float(row[col]):,.0f}"))
+                except (ValueError, TypeError):
+                    cells.append(html.Td(""))
+
         body_rows.append(
             html.Tr(
-                [
-                    html.Td(row[col]) if col == "Category"
-                    else html.Td(f"{float(row[col]):,.0f}")
-                    for col in section_df.columns
-                ],
+                cells,
                 className="total-row" if is_total else ""
             )
         )
@@ -72,6 +79,14 @@ def build_report_layout(filtered_df, selected_date, selected_shift, selected_tim
                     html.Div([html.Strong("Time: "), selected_time], className="report-pill"),
                 ],
                 className="report-header"
+            ),
+            html.Details(
+                [
+                    html.Summary("Debug"),
+                    html.Div(f"Rows used: {len(filtered_df)}"),
+                    html.Pre("\n".join(filtered_df.columns)),
+                ],
+                className="debug-section"
             ),
             *report_sections,
         ]

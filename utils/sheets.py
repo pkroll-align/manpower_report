@@ -78,12 +78,4 @@ def load_sheet_data(sheet_id, worksheet_name, range_name="A:BU"):
 
     df = pd.DataFrame(rows, columns=headers)
 
-    columns_to_drop = []
-
-    for index in [4, 40, 41]:
-        if index < len(df.columns):
-            columns_to_drop.append(df.columns[index])
-
-    df = df.drop(columns=columns_to_drop)
-
     return df
