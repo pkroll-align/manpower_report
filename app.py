@@ -28,7 +28,7 @@ def get_default_adjusted_date():
     if now.hour < 9:
         now = now - timedelta(days=1)
 
-    return now.date()
+    return now.date().isoformat()
 
 
 def build_report_table(section_df):
@@ -151,10 +151,11 @@ app.layout = html.Div(
                 html.H2("Filters"),
 
                 html.Label("Date"),
-                dmc.DatePicker(
+                dmc.DatePickerInput(
                     id="date-filter",
                     value=get_default_adjusted_date(),
-                    allowDeselect=False,
+                    valueFormat="MM/DD/YYYY",
+                    clearable=False,
                 ),
 
                 html.Label("Shift"),
@@ -206,7 +207,7 @@ def update_time_options(selected_shift):
 
 @app.callback(
     Output("report-container", "children"),
-    Input("date-filter", "date"),
+    Input("date-filter", "value"),
     Input("shift-filter", "value"),
     Input("time-filter", "value"),
 )
