@@ -1,4 +1,5 @@
-from datetime import date
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from dash import Dash, Input, Output, dcc, html
 
@@ -13,10 +14,20 @@ from utils.calculations import build_report_sections
 
 SHEET_ID = "1ZRTbCI0b7q1OjEf5NOn-IZbVgmetqGkF0Koa4xxliI4"
 WORKSHEET_NAME = "Day Form Responses"
+LOCAL_TIMEZONE = "America/Chicago"
 
 
 app = Dash(__name__)
 server = app.server
+
+
+def get_default_adjusted_date():
+    now = datetime.now(ZoneInfo(LOCAL_TIMEZONE))
+
+    if now.hour < 9:
+        now = now - timedelta(days=1)
+
+    return now.date()
 
 
 def build_report_table(section_df):
@@ -102,7 +113,7 @@ app.layout = html.Div(
                 html.Label("Date"),
                 dcc.DatePickerSingle(
                     id="date-filter",
-                    date=date.today(),
+                    date=get_default_adjusted_date(),
                     display_format="MM/DD/YYYY",
                 ),
 
