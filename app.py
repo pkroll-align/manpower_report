@@ -17,6 +17,10 @@ SHEET_ID = "1ZRTbCI0b7q1OjEf5NOn-IZbVgmetqGkF0Koa4xxliI4"
 WORKSHEET_NAME = "Day Form Responses"
 LOCAL_TIMEZONE = "America/Chicago"
 
+# Auto-refresh interval in milliseconds.
+# 60,000 = refresh once per minute.
+AUTO_REFRESH_INTERVAL_MS = 60000
+
 
 app = Dash(__name__)
 server = app.server
@@ -104,27 +108,6 @@ def build_debug_table(filtered_df):
     )
 
 
-def build_report_section(section_name, section_df):
-    section_content = html.Div(
-        [
-            html.Div(section_name, className="section-header"),
-            build_report_table(section_df),
-        ],
-        className="report-section"
-    )
-
-    if section_name == "Total Manpower":
-        return section_content
-
-    return html.Details(
-        [
-            html.Summary(section_name, className="section-summary"),
-            build_report_table(section_df),
-        ],
-        className="collapsible-report-section"
-    )
-
-
 def build_report_layout(filtered_df, selected_date, selected_shift, selected_time):
     sections = build_report_sections(filtered_df)
 
@@ -132,7 +115,13 @@ def build_report_layout(filtered_df, selected_date, selected_shift, selected_tim
 
     for section_name, section_df in sections.items():
         report_sections.append(
-            build_report_section(section_name, section_df)
+            html.Div(
+                [
+                    html.Div(section_name, className="section-header"),
+                    build_report_table(section_df),
+                ],
+                className="report-section"
+            )
         )
 
     return html.Div(
@@ -151,6 +140,9 @@ def build_report_layout(filtered_df, selected_date, selected_shift, selected_tim
                 [
                     html.Summary("Debug - rows used in report"),
                     html.Div(f"Rows used: {len(filtered_df)}"),
+                    html.Div(
+                        f"Last refreshed: {datetime.now(ZoneInfo(LOCAL_TIMEZONE)).strftime('%m/%d/%Y %I:%M:%S %p')}"
+                    ),
                     build_debug_table(filtered_df),
                 ],
                 className="debug-section"
@@ -208,6 +200,22 @@ app.layout = dmc.MantineProvider(
                 id="report-container",
                 className="main-content"
             ),
+
+            html.Div(
+                id="auto-refresh-container",
+                children=[
+                    # This triggers the report callback every minute.
+                    dmc.Text("", style={"display": "none"}),
+                ],
+                style={"display": "none"},
+            ),
+
+            # Dash interval component for live updates
+            __import__("dash").dcc.Interval(
+                id="auto-refresh-interval",
+                interval=AUTO_REFRESH_INTERVAL_MS,
+                n_intervals=0,
+            ),
         ],
         className="app-container"
     )
@@ -235,9 +243,14 @@ def update_time_options(selected_shift):
     Input("date-filter", "value"),
     Input("shift-filter", "value"),
     Input("time-filter", "value"),
+    Input("auto-refresh-interval", "n_intervals"),
 )
-def update_report(selected_date, selected_shift, selected_time):
-    df = load_sheet_data(SHEET_ID, WORKSHEET_NAME)
+def update_report(selected_date, selected_shift, selected_time, n_intervals):
+    df = load_sheet_data(
+        SHEET_ID,
+        WORKSHEET_NAME,
+        force_refresh=True,
+    )
 
     filtered_df = apply_report_filters(
         df,
