@@ -16,6 +16,7 @@ body {
     background: #ffffff;
     border-right: 1px solid #d9e2ec;
     box-sizing: border-box;
+    overflow-x: hidden;	
 }
 
 .sidebar h2 {
@@ -32,10 +33,52 @@ body {
     font-size: 13px;
 }
 
+/* Calendar sizing only */
+.calendar-wrapper {
+    width: 100%;
+    max-width: 220px;
+    overflow: hidden;
+}
+
+/* Shrinks Mantine DatePicker internals */
+.calendar-wrapper .mantine-DatePicker-calendarHeader {
+    max-width: 220px;
+}
+
+.calendar-wrapper .mantine-DatePicker-month {
+    width: 220px;
+}
+
+.calendar-wrapper .mantine-DatePicker-monthCell {
+    padding: 0;
+}
+
+.calendar-wrapper .mantine-DatePicker-day {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    font-size: 11px;
+}
+
+.calendar-wrapper .mantine-DatePicker-weekday {
+    font-size: 10px;
+    width: 26px;
+}
+
+.calendar-wrapper .mantine-DatePicker-calendarHeaderControl {
+    width: 24px;
+    height: 24px;
+}
+
+.calendar-wrapper .mantine-DatePicker-calendarHeaderLevel {
+    font-size: 12px;
+}
+
 .main-content {
     flex: 1;
     padding: 18px 24px;
     box-sizing: border-box;
+	overflow-x: auto;
 }
 
 .report-header {
