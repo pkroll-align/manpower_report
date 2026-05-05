@@ -155,7 +155,7 @@ app.layout = html.Div(
                     id="date-filter",
                     value=get_default_adjusted_date(),
                     allowDeselect=False,
-                )
+                ),
 
                 html.Label("Shift"),
                 dcc.Dropdown(
