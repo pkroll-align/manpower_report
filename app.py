@@ -172,7 +172,7 @@ app.layout = html.Div(
                 html.Label("Time"),
                 dcc.Dropdown(
                     id="time-filter",
-                    searchable=False
+                    searchable=False,
                     clearable=False,
                 ),
             ],
