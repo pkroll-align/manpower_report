@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from dash import Dash, Input, Output, dcc, html
-import dash-mantine-components as dmc
+from dash import Dash, Input, Output, html
+import dash_mantine_components as dmc
 
 from utils.sheets import load_sheet_data
 from utils.data_filters import (
