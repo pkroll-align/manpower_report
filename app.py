@@ -17,6 +17,10 @@ SHEET_ID = "1ZRTbCI0b7q1OjEf5NOn-IZbVgmetqGkF0Koa4xxliI4"
 WORKSHEET_NAME = "Day Form Responses"
 LOCAL_TIMEZONE = "America/Chicago"
 
+DMC_VERSION = getattr(dmc, "__version__", "unknown")
+
+print("dash-mantine-components version:", DMC_VERSION)
+
 
 app = Dash(__name__)
 server = app.server
@@ -150,10 +154,20 @@ app.layout = html.Div(
             [
                 html.H2("Filters"),
 
+                html.Div(
+                    f"dash-mantine-components: {DMC_VERSION}",
+                    style={
+                        "fontSize": "11px",
+                        "marginBottom": "12px",
+                        "color": "#667085",
+                    },
+                ),
+
                 html.Label("Date"),
-                dmc.Calendar(
+                dcc.DatePickerSingle(
                     id="date-filter",
-                    value=get_default_adjusted_date(),
+                    date=get_default_adjusted_date(),
+                    display_format="MM/DD/YYYY",
                 ),
 
                 html.Label("Shift"),
@@ -205,7 +219,7 @@ def update_time_options(selected_shift):
 
 @app.callback(
     Output("report-container", "children"),
-    Input("date-filter", "value"),
+    Input("date-filter", "date"),
     Input("shift-filter", "value"),
     Input("time-filter", "value"),
 )
