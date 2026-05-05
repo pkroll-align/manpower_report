@@ -151,11 +151,9 @@ app.layout = html.Div(
                 html.H2("Filters"),
 
                 html.Label("Date"),
-                dmc.DatePickerInput(
+                dmc.Calendar(
                     id="date-filter",
                     value=get_default_adjusted_date(),
-                    valueFormat="MM/DD/YYYY",
-                    clearable=False,
                 ),
 
                 html.Label("Shift"),

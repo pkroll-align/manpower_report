@@ -1,6 +1,6 @@
 dash
+dash-mantine-components
 pandas
 gspread
 google-auth
 gunicorn
-dash-mantine-components
