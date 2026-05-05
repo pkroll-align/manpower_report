@@ -101,3 +101,28 @@ body {
     color: #ffffff;
     font-weight: 700;
 }
+.debug-section {
+    margin-top: 24px;
+    font-size: 12px;
+}
+
+.debug-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    background: #ffffff;
+    font-size: 11px;
+}
+
+.debug-table th {
+    background: #eef3f7;
+    color: #003b5c;
+    border: 1px solid #d9e2ec;
+    padding: 4px 6px;
+    text-align: left;
+}
+
+.debug-table td {
+    border: 1px solid #e5edf3;
+    padding: 4px 6px;
+}

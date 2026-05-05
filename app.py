@@ -64,6 +64,45 @@ def build_report_table(section_df):
     )
 
 
+def build_debug_table(filtered_df):
+    debug_cols = [
+        "Timestamp",
+        "Adjusted Date",
+        "Company:",
+        "Which shift?",
+        "Time",
+    ]
+
+    available_debug_cols = [
+        col for col in debug_cols
+        if col in filtered_df.columns
+    ]
+
+    if filtered_df.empty:
+        return html.Div("No rows are being used for this report.")
+
+    if not available_debug_cols:
+        return html.Div("No debug columns were found in the filtered data.")
+
+    header = html.Tr([
+        html.Th(col) for col in available_debug_cols
+    ])
+
+    body_rows = []
+
+    for _, row in filtered_df[available_debug_cols].iterrows():
+        body_rows.append(
+            html.Tr([
+                html.Td(str(row[col])) for col in available_debug_cols
+            ])
+        )
+
+    return html.Table(
+        [html.Thead(header), html.Tbody(body_rows)],
+        className="debug-table"
+    )
+
+
 def build_report_layout(filtered_df, selected_date, selected_shift, selected_time):
     sections = build_report_sections(filtered_df)
 
@@ -91,15 +130,15 @@ def build_report_layout(filtered_df, selected_date, selected_shift, selected_tim
                 ],
                 className="report-header"
             ),
+            *report_sections,
             html.Details(
                 [
-                    html.Summary("Debug"),
+                    html.Summary("Debug - rows used in report"),
                     html.Div(f"Rows used: {len(filtered_df)}"),
-                    html.Pre("\n".join(filtered_df.columns)),
+                    build_debug_table(filtered_df),
                 ],
                 className="debug-section"
             ),
-            *report_sections,
         ]
     )
 
