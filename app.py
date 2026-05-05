@@ -152,12 +152,10 @@ app.layout = dmc.MantineProvider(
                     html.H2("Filters"),
 
                     html.Label("Date"),
-                    dmc.DatePickerInput(
+                    dmc.DatePicker(
                         id="date-filter",
                         value=get_default_adjusted_date(),
-                        valueFormat="M/D/YYYY",
-                        clearable=False,
-                        size="sm",
+                        allowDeselect=False,
                     ),
 
                     html.Label("Shift"),
