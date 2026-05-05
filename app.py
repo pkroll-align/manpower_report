@@ -17,10 +17,6 @@ SHEET_ID = "1ZRTbCI0b7q1OjEf5NOn-IZbVgmetqGkF0Koa4xxliI4"
 WORKSHEET_NAME = "Day Form Responses"
 LOCAL_TIMEZONE = "America/Chicago"
 
-DMC_VERSION = getattr(dmc, "__version__", "unknown")
-
-print("dash-mantine-components version:", DMC_VERSION)
-
 
 app = Dash(__name__)
 server = app.server
@@ -148,56 +144,51 @@ def build_report_layout(filtered_df, selected_date, selected_shift, selected_tim
     )
 
 
-app.layout = html.Div(
-    [
-        html.Div(
-            [
-                html.H2("Filters"),
+app.layout = dmc.MantineProvider(
+    html.Div(
+        [
+            html.Div(
+                [
+                    html.H2("Filters"),
 
-                html.Div(
-                    f"dash-mantine-components: {DMC_VERSION}",
-                    style={
-                        "fontSize": "11px",
-                        "marginBottom": "12px",
-                        "color": "#667085",
-                    },
-                ),
+                    html.Label("Date"),
+                    dmc.DatePickerInput(
+                        id="date-filter",
+                        value=get_default_adjusted_date(),
+                        valueFormat="M/D/YYYY",
+                        clearable=False,
+                        size="sm",
+                    ),
 
-                html.Label("Date"),
-                dcc.DatePickerSingle(
-                    id="date-filter",
-                    date=get_default_adjusted_date(),
-                    display_format="MM/DD/YYYY",
-                ),
+                    html.Label("Shift"),
+                    dcc.Dropdown(
+                        id="shift-filter",
+                        options=[
+                            {"label": "Day Shift", "value": "Day Shift"},
+                            {"label": "Night Shift", "value": "Night Shift"},
+                        ],
+                        value="Day Shift",
+                        searchable=False,
+                        clearable=False,
+                    ),
 
-                html.Label("Shift"),
-                dcc.Dropdown(
-                    id="shift-filter",
-                    options=[
-                        {"label": "Day Shift", "value": "Day Shift"},
-                        {"label": "Night Shift", "value": "Night Shift"},
-                    ],
-                    value="Day Shift",
-                    searchable=False,
-                    clearable=False,
-                ),
+                    html.Label("Time"),
+                    dcc.Dropdown(
+                        id="time-filter",
+                        searchable=False,
+                        clearable=False,
+                    ),
+                ],
+                className="sidebar"
+            ),
 
-                html.Label("Time"),
-                dcc.Dropdown(
-                    id="time-filter",
-                    searchable=False,
-                    clearable=False,
-                ),
-            ],
-            className="sidebar"
-        ),
-
-        html.Div(
-            id="report-container",
-            className="main-content"
-        ),
-    ],
-    className="app-container"
+            html.Div(
+                id="report-container",
+                className="main-content"
+            ),
+        ],
+        className="app-container"
+    )
 )
 
 
@@ -219,7 +210,7 @@ def update_time_options(selected_shift):
 
 @app.callback(
     Output("report-container", "children"),
-    Input("date-filter", "date"),
+    Input("date-filter", "value"),
     Input("shift-filter", "value"),
     Input("time-filter", "value"),
 )
