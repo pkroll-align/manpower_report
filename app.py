@@ -104,6 +104,27 @@ def build_debug_table(filtered_df):
     )
 
 
+def build_report_section(section_name, section_df):
+    section_content = html.Div(
+        [
+            html.Div(section_name, className="section-header"),
+            build_report_table(section_df),
+        ],
+        className="report-section"
+    )
+
+    if section_name == "Total Manpower":
+        return section_content
+
+    return html.Details(
+        [
+            html.Summary(section_name, className="section-summary"),
+            build_report_table(section_df),
+        ],
+        className="collapsible-report-section"
+    )
+
+
 def build_report_layout(filtered_df, selected_date, selected_shift, selected_time):
     sections = build_report_sections(filtered_df)
 
@@ -111,13 +132,7 @@ def build_report_layout(filtered_df, selected_date, selected_shift, selected_tim
 
     for section_name, section_df in sections.items():
         report_sections.append(
-            html.Div(
-                [
-                    html.Div(section_name, className="section-header"),
-                    build_report_table(section_df),
-                ],
-                className="report-section"
-            )
+            build_report_section(section_name, section_df)
         )
 
     return html.Div(
@@ -171,7 +186,6 @@ app.layout = dmc.MantineProvider(
                         value="Day Shift",
                         allowDeselect=False,
                         searchable=False,
-                        withCheckIcon=False,
                         size="sm",
                         className="filter-select",
                     ),
@@ -183,7 +197,6 @@ app.layout = dmc.MantineProvider(
                         value=None,
                         allowDeselect=False,
                         searchable=False,
-                        withCheckIcon=False,
                         size="sm",
                         className="filter-select",
                     ),

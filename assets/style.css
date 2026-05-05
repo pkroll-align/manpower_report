@@ -169,6 +169,26 @@ body {
     font-weight: 700;
 }
 
+.collapsible-report-section {
+    margin-bottom: 12px;
+}
+
+.section-summary {
+    background: #003b5c;
+    color: #ffffff;
+    padding: 6px 10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    list-style-position: inside;
+}
+
+.collapsible-report-section[open] .section-summary {
+    margin-bottom: 0;
+}
+
 .debug-section {
     margin-top: 24px;
     font-size: 12px;
