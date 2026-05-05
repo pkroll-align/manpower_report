@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 from dash import Dash, Input, Output, dcc, html
+import dash-mantine-components as dmc
 
 from utils.sheets import load_sheet_data
 from utils.data_filters import (
@@ -150,11 +151,11 @@ app.layout = html.Div(
                 html.H2("Filters"),
 
                 html.Label("Date"),
-                dcc.DatePickerSingle(
+                dmc.DatePicker(
                     id="date-filter",
-                    date=get_default_adjusted_date(),
-                    display_format="MM/DD/YYYY",
-                ),
+                    value=get_default_adjusted_date(),
+                    allowDeselect=False,
+                )
 
                 html.Label("Shift"),
                 dcc.Dropdown(
@@ -164,12 +165,14 @@ app.layout = html.Div(
                         {"label": "Night Shift", "value": "Night Shift"},
                     ],
                     value="Day Shift",
+                    searchable=False,
                     clearable=False,
                 ),
 
                 html.Label("Time"),
                 dcc.Dropdown(
                     id="time-filter",
+                    searchable=False
                     clearable=False,
                 ),
             ],
