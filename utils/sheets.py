@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 import gspread
 import pandas as pd
@@ -7,6 +8,11 @@ from google.oauth2.service_account import Credentials
 
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+
+CACHE_TTL_SECONDS = 120
+
+_cached_df = None
+_cached_at = 0
 
 
 def get_credentials():
@@ -60,7 +66,7 @@ def normalize_rows(rows, header_count):
     return normalized_rows
 
 
-def load_sheet_data(sheet_id, worksheet_name, range_name="A:BU"):
+def fetch_sheet_data(sheet_id, worksheet_name, range_name="A:BU"):
     gc = get_google_client()
 
     spreadsheet = gspread.Spreadsheet(gc.http_client, {"id": sheet_id})
@@ -77,5 +83,28 @@ def load_sheet_data(sheet_id, worksheet_name, range_name="A:BU"):
     rows = normalize_rows(rows, len(headers))
 
     df = pd.DataFrame(rows, columns=headers)
+
+    return df
+
+
+def load_sheet_data(sheet_id, worksheet_name, range_name="A:BU", force_refresh=False):
+    global _cached_df
+    global _cached_at
+
+    now = time.time()
+
+    cache_is_valid = (
+        _cached_df is not None
+        and not force_refresh
+        and now - _cached_at < CACHE_TTL_SECONDS
+    )
+
+    if cache_is_valid:
+        return _cached_df.copy()
+
+    df = fetch_sheet_data(sheet_id, worksheet_name, range_name)
+
+    _cached_df = df.copy()
+    _cached_at = now
 
     return df
