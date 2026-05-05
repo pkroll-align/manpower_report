@@ -152,10 +152,14 @@ app.layout = dmc.MantineProvider(
                     html.H2("Filters"),
 
                     html.Label("Date"),
-                    dmc.DatePicker(
-                        id="date-filter",
-                        value=get_default_adjusted_date(),
-                        allowDeselect=False,
+                    html.Div(
+                        dmc.DatePicker(
+                            id="date-filter",
+                            value=get_default_adjusted_date(),
+                            allowDeselect=False,
+                            size="xs",
+                        ),
+                        className="calendar-wrapper",
                     ),
 
                     html.Label("Shift"),
