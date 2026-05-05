@@ -17,8 +17,8 @@ TOTAL_PERSONNEL_COL = "Total number of personnel (including Leads/Supervisors)"
 LEAD_COLUMNS = [
     "Warehouse Leads/Supervisors",
     "SC Leads/Supervisors",
-    "DH15 Leads/Supervisors",
     "DH13 Leads/Supervisors",
+    "DH15 Leads/Supervisors",
     "DH18 Leads/Supervisors",
     "DH20 Leads/Supervisors",
 ]
@@ -29,12 +29,6 @@ LABORER_COLUMNS = [
     "QC/Relabeling",
     "Pre-Staging Cable after QC",
     "Staging Cable on DH floor for pulls",
-
-    # Supercore
-    "SC SMF Dressing",
-    "SC SMF Patching",
-    "SC SMF QC/Monitoring",
-    "SC SMF Testing",
 
     # DH13
     "DH13 T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
@@ -87,22 +81,64 @@ LABORER_COLUMNS = [
     "DH20 QC/Monitoring",
     "DH20 Copper Testing",
     "DH20 Fiber Testing",
+
+    # Supercore
+    "SC SMF Dressing",
+    "SC SMF Patching",
+    "SC SMF QC/Monitoring",
+    "SC SMF Testing",
 ]
 
 
 DH_TASK_ROWS = [
-    ("Leads/Supervisors", "Leads/Supervisors"),
-    ("T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)", "T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)"),
-    ("Patching T1 SMF (AS-T1/R.T1-T2)", "Patching T1 SMF (AS-T1/R.T1-T2)"),
-    ("Patching GPU-T1 CAT6", "Patching GPU-T1 CAT6"),
-    ("Dressing/Patching AEC", "Patching AEC"),
-    ("Dressing/Patching IPMI", "Patching IPMI"),
-    ("Network Row Sidecart dressing SMF", "Network Row Sidecart dressing SMF"),
-    ("Network Row Patching SMF", "Network Row Patching SMF"),
-    ("Dressing/Patching (NA/NB) Mgmt CAT6", "Patching (NA/NB) Mgmt CAT6"),
-    ("QC/Monitoring", "QC/Monitoring"),
-    ("Copper Testing", "Copper Testing"),
-    ("Fiber Testing", "Fiber Testing"),
+    (
+        "Leads/Supervisors",
+        "Leads/Supervisors",
+    ),
+    (
+        "T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
+        "T1 Sidecart Dressing SMF (AS-T1/R.T1-T2)",
+    ),
+    (
+        "Patching T1 SMF (AS-T1/R.T1-T2)",
+        "Patching T1 SMF (AS-T1/R.T1-T2)",
+    ),
+    (
+        "Patching GPU-T1 CAT6",
+        "Patching GPU-T1 CAT6",
+    ),
+    (
+        "Dressing/Patching AEC",
+        "Patching AEC",
+    ),
+    (
+        "Dressing/Patching IPMI",
+        "Patching IPMI",
+    ),
+    (
+        "Network Row Sidecart dressing SMF",
+        "Network Row Sidecart dressing SMF",
+    ),
+    (
+        "Network Row Patching SMF",
+        "Network Row Patching SMF",
+    ),
+    (
+        "Dressing/Patching (NA/NB) Mgmt CAT6",
+        "Patching (NA/NB) Mgmt CAT6",
+    ),
+    (
+        "QC/Monitoring",
+        "QC/Monitoring",
+    ),
+    (
+        "Copper Testing",
+        "Copper Testing",
+    ),
+    (
+        "Fiber Testing",
+        "Fiber Testing",
+    ),
 ]
 
 

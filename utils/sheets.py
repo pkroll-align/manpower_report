@@ -1,16 +1,21 @@
 import json
-import pandas as pd
-import streamlit as st
+import os
+
 import gspread
+import pandas as pd
 from google.oauth2.service_account import Credentials
+
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 
 def get_credentials():
-    service_account_info = json.loads(
-        st.secrets["gcp_service_account"]["json"]
-    )
+    service_account_json = os.environ.get("GCP_SERVICE_ACCOUNT_JSON")
+
+    if not service_account_json:
+        raise RuntimeError("Missing GCP_SERVICE_ACCOUNT_JSON environment variable.")
+
+    service_account_info = json.loads(service_account_json)
 
     return Credentials.from_service_account_info(
         service_account_info,
@@ -73,10 +78,6 @@ def load_sheet_data(sheet_id, worksheet_name, range_name="A:BU"):
 
     df = pd.DataFrame(rows, columns=headers)
 
-    # Drop unwanted source columns: E, AO, AP
-    # E  = index 4
-    # AO = index 40
-    # AP = index 41
     columns_to_drop = []
 
     for index in [4, 40, 41]:

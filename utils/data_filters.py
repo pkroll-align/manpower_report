@@ -1,6 +1,4 @@
 import pandas as pd
-import streamlit as st
-from datetime import date
 
 
 DATE_COL = "Adjusted Date"
@@ -47,7 +45,6 @@ def dedupe_latest_company_entries(df):
     missing_cols = [col for col in required_cols if col not in df.columns]
 
     if missing_cols:
-        st.warning(f"Cannot dedupe. Missing columns: {missing_cols}")
         return df
 
     df = df.copy()
@@ -86,55 +83,24 @@ def dedupe_latest_company_entries(df):
     return df
 
 
-def apply_filters(df):
+def apply_report_filters(df, selected_date, selected_shift, selected_time):
     filtered_df = dedupe_latest_company_entries(df)
 
-    st.sidebar.header("Filters")
-
-    selected_date = date.today()
-
-    if DATE_COL in filtered_df.columns:
-        selected_date = st.sidebar.date_input(
-            "Date",
-            value=date.today()
-        )
+    if DATE_COL in filtered_df.columns and selected_date:
+        selected_date = pd.to_datetime(selected_date).date()
 
         filtered_df = filtered_df[
             filtered_df[DATE_COL].dt.date == selected_date
         ]
-    else:
-        st.sidebar.warning(f"Missing date column: {DATE_COL}")
 
-    selected_shift = st.sidebar.selectbox(
-        "Shift",
-        options=["Day Shift", "Night Shift"]
-    )
-
-    if SHIFT_COL in filtered_df.columns:
+    if SHIFT_COL in filtered_df.columns and selected_shift:
         filtered_df = filtered_df[
             filtered_df[SHIFT_COL] == selected_shift
         ]
-    else:
-        st.sidebar.warning(f"Missing shift column: {SHIFT_COL}")
 
-    time_options = DAY_SHIFT_TIMES if selected_shift == "Day Shift" else NIGHT_SHIFT_TIMES
-
-    selected_time = st.sidebar.selectbox(
-        "Time",
-        options=time_options
-    )
-
-    if TIME_COL in filtered_df.columns:
+    if TIME_COL in filtered_df.columns and selected_time:
         filtered_df = filtered_df[
             filtered_df[TIME_COL] == selected_time
         ]
-    else:
-        st.sidebar.warning(f"Missing time column: {TIME_COL}")
 
-    selected_filters = {
-        "date": selected_date,
-        "shift": selected_shift,
-        "time": selected_time,
-    }
-
-    return filtered_df, selected_filters
+    return filtered_df
