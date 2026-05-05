@@ -16,7 +16,7 @@ body {
     background: #ffffff;
     border-right: 1px solid #d9e2ec;
     box-sizing: border-box;
-    overflow-x: hidden;	
+    overflow-x: hidden;
 }
 
 .sidebar h2 {
@@ -31,6 +31,7 @@ body {
     margin-bottom: 6px;
     font-weight: 700;
     font-size: 13px;
+    color: #003b5c;
 }
 
 /* Calendar sizing only */
@@ -38,6 +39,28 @@ body {
     width: 100%;
     max-width: 220px;
     overflow: hidden;
+}
+
+/* Mantine filter controls */
+.filter-select {
+    width: 100%;
+    max-width: 220px;
+}
+
+.filter-select input,
+.filter-select button {
+    font-size: 13px;
+}
+
+.filter-select .mantine-Select-input {
+    border: 1px solid #d9e2ec;
+    border-radius: 4px;
+    color: #1f2d3d;
+    background: #ffffff;
+}
+
+.filter-select .mantine-Select-input:focus {
+    border-color: #003b5c;
 }
 
 /* Shrinks Mantine DatePicker internals */
@@ -78,7 +101,7 @@ body {
     flex: 1;
     padding: 18px 24px;
     box-sizing: border-box;
-	overflow-x: auto;
+    overflow-x: auto;
 }
 
 .report-header {
@@ -105,7 +128,7 @@ body {
     color: #ffffff;
     padding: 6px 10px;
     border-top-left-radius: 3px;
-    border-top-right-radius: 3px;	
+    border-top-right-radius: 3px;
     font-size: 14px;
     font-weight: 700;
     margin-bottom: 0px;
@@ -145,6 +168,7 @@ body {
     color: #ffffff;
     font-weight: 700;
 }
+
 .debug-section {
     margin-top: 24px;
     font-size: 12px;

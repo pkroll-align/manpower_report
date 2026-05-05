@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from dash import Dash, Input, Output, html, dcc
+from dash import Dash, Input, Output, html
 import dash_mantine_components as dmc
 
 from utils.sheets import load_sheet_data
@@ -162,22 +162,28 @@ app.layout = dmc.MantineProvider(
                     ),
 
                     html.Label("Shift"),
-                    dcc.Dropdown(
+                    dmc.Select(
                         id="shift-filter",
-                        options=[
+                        data=[
                             {"label": "Day Shift", "value": "Day Shift"},
                             {"label": "Night Shift", "value": "Night Shift"},
                         ],
                         value="Day Shift",
+                        allowDeselect=False,
                         searchable=False,
-                        clearable=False,
+                        size="sm",
+                        className="filter-select",
                     ),
 
                     html.Label("Time"),
-                    dcc.Dropdown(
+                    dmc.Select(
                         id="time-filter",
+                        data=[],
+                        value=None,
+                        allowDeselect=False,
                         searchable=False,
-                        clearable=False,
+                        size="sm",
+                        className="filter-select",
                     ),
                 ],
                 className="sidebar"
@@ -194,7 +200,7 @@ app.layout = dmc.MantineProvider(
 
 
 @app.callback(
-    Output("time-filter", "options"),
+    Output("time-filter", "data"),
     Output("time-filter", "value"),
     Input("shift-filter", "value"),
 )
