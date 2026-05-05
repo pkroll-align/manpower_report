@@ -157,7 +157,6 @@ app.layout = dmc.MantineProvider(
                             id="date-filter",
                             value=get_default_adjusted_date(),
                             allowDeselect=False,
-                            size="xs",
                         ),
                         className="calendar-wrapper",
                     ),
