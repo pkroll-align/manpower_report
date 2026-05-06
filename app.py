@@ -116,15 +116,30 @@ def build_report_layout(filtered_df, selected_date, selected_shift, selected_tim
     report_sections = []
 
     for section_name, section_df in sections.items():
-        report_sections.append(
-            html.Div(
-                [
-                    html.Div(section_name, className="section-header"),
-                    build_report_table(section_df),
-                ],
-                className="report-section"
+        if section_name == "Total Manpower":
+            report_sections.append(
+                html.Div(
+                    [
+                        html.Div(section_name, className="section-header"),
+                        build_report_table(section_df),
+                    ],
+                    className="report-section"
+                )
             )
-        )
+        else:
+            report_sections.append(
+                html.Details(
+                    [
+                        html.Summary(
+                            section_name,
+                            className="section-header"
+                        ),
+                        build_report_table(section_df),
+                    ],
+                    className="report-section",
+                    open=True,
+                )
+            )
 
     return html.Div(
         [
@@ -205,6 +220,7 @@ app.layout = dmc.MantineProvider(
                         searchable=False,
                         size="sm",
                         className="filter-select",
+                        withCheckIcon=False,
                     ),
 
                     html.Label("Time"),
@@ -216,6 +232,7 @@ app.layout = dmc.MantineProvider(
                         searchable=False,
                         size="sm",
                         className="filter-select",
+                        withCheckIcon=False,
                     ),
                 ],
                 className="sidebar"

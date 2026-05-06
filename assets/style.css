@@ -167,6 +167,8 @@ body {
     background: #005f86;
     color: #ffffff;
     font-weight: 700;
+	border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .collapsible-report-section {
@@ -213,4 +215,8 @@ body {
 .debug-table td {
     border: 1px solid #e5edf3;
     padding: 4px 6px;
+}
+
+html {
+    overflow-y: scroll;
 }
