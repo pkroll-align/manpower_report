@@ -9,7 +9,7 @@ from google.oauth2.service_account import Credentials
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
-CACHE_TTL_SECONDS = 120
+CACHE_TTL_SECONDS = 60
 
 _cached_df = None
 _cached_at = 0

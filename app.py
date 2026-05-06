@@ -1,7 +1,9 @@
+from dotenv import load_dotenv
+load_dotenv()
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from dash import Dash, Input, Output, html
+from dash import Dash, Input, Output, State, ctx, html
 import dash_mantine_components as dmc
 
 from utils.sheets import load_sheet_data
@@ -22,7 +24,7 @@ LOCAL_TIMEZONE = "America/Chicago"
 AUTO_REFRESH_INTERVAL_MS = 60000
 
 
-app = Dash(__name__)
+app = Dash(__name__, title="xAI Daily Manpower Report")
 server = app.server
 
 
@@ -160,11 +162,34 @@ app.layout = dmc.MantineProvider(
 
                     html.Label("Date"),
                     html.Div(
-                        dmc.DatePicker(
-                            id="date-filter",
-                            value=get_default_adjusted_date(),
-                            allowDeselect=False,
-                        ),
+                        [
+                            dmc.DatePicker(
+                                id="date-filter",
+                                value=get_default_adjusted_date(),
+                                allowDeselect=False,
+                            ),
+                            dmc.Group(
+                                [
+                                    dmc.Button(
+                                        "Yesterday",
+                                        id="preset-yesterday",
+                                        size="xs",
+                                        variant="outline",
+                                        color="gray",
+                                    ),
+                                    dmc.Button(
+                                        "Today",
+                                        id="preset-today",
+                                        size="xs",
+                                        variant="outline",
+                                        color="gray",
+                                    ),
+                                ],
+                                justify="center",
+                                mt="sm",
+                                gap="xs",
+                            ),
+                        ],
                         className="calendar-wrapper",
                     ),
 
@@ -221,12 +246,32 @@ app.layout = dmc.MantineProvider(
     )
 )
 
+@app.callback(
+    Output("date-filter", "value"),
+    Input("preset-yesterday", "n_clicks"),
+    Input("preset-today", "n_clicks"),
+    State("date-filter", "value"),
+)
+def update_date_from_preset(yesterday_clicks, today_clicks, current_date):
+    triggered_id = ctx.triggered_id
+
+    if triggered_id == "preset-yesterday":
+        return (
+            datetime.now(ZoneInfo(LOCAL_TIMEZONE)).date()
+            - timedelta(days=1)
+        ).isoformat()
+
+    if triggered_id == "preset-today":
+        return datetime.now(ZoneInfo(LOCAL_TIMEZONE)).date().isoformat()
+
+    return current_date
 
 @app.callback(
     Output("time-filter", "data"),
     Output("time-filter", "value"),
     Input("shift-filter", "value"),
 )
+
 def update_time_options(selected_shift):
     if selected_shift == "Night Shift":
         times = NIGHT_SHIFT_TIMES
@@ -249,7 +294,7 @@ def update_report(selected_date, selected_shift, selected_time, n_intervals):
     df = load_sheet_data(
         SHEET_ID,
         WORKSHEET_NAME,
-        force_refresh=True,
+        force_refresh=False,
     )
 
     filtered_df = apply_report_filters(
