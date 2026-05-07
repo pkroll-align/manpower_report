@@ -185,6 +185,7 @@ app.layout = dmc.MantineProvider(
                                 id="date-filter",
                                 value=get_default_adjusted_date(),
                                 allowDeselect=False,
+                                disabledDates=[],
                             ),
                             dmc.Group(
                                 [
@@ -267,6 +268,45 @@ app.layout = dmc.MantineProvider(
         className="app-container"
     )
 )
+
+@app.callback(
+    Output("date-filter", "disabledDates"),
+    Input("auto-refresh-interval", "n_intervals"),
+)
+def update_disabled_dates(n_intervals):
+    df = load_sheet_data(
+        SHEET_ID,
+        WORKSHEET_NAME,
+        force_refresh=False,
+    )
+
+    if "Adjusted Date" not in df.columns:
+        return []
+
+    available_dates = set(
+        df["Adjusted Date"]
+        .dropna()
+        .astype(str)
+        .str[:10]
+        .tolist()
+    )
+
+    today = datetime.now(ZoneInfo(LOCAL_TIMEZONE)).date()
+    start_date = today - timedelta(days=120)
+    end_date = today + timedelta(days=30)
+
+    disabled_dates = []
+
+    current_date = start_date
+    while current_date <= end_date:
+        date_string = current_date.isoformat()
+
+        if date_string not in available_dates:
+            disabled_dates.append(date_string)
+
+        current_date = current_date + timedelta(days=1)
+
+    return disabled_dates
 
 @app.callback(
     Output("date-filter", "value"),

@@ -120,6 +120,11 @@ body {
     font-size: 11px;
 }
 
+.calendar-wrapper .mantine-DatePicker-weekday,
+.calendar-wrapper .mantine-DatePicker-day {
+    color: #1f2d3d;
+}
+
 .calendar-wrapper .mantine-DatePicker-weekday {
     font-size: 10px;
     width: 26px;
@@ -132,6 +137,8 @@ body {
 
 .calendar-wrapper .mantine-DatePicker-calendarHeaderLevel {
     font-size: 12px;
+	font-weight: 700;
+	color: #00285A;
 }
 
 .main-content {
