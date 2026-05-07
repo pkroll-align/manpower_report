@@ -195,6 +195,12 @@ app.layout = dmc.MantineProvider(
                                         variant="default",
                                         className="filter-select",
                                         w=100,
+                                        styles={
+                                            "root": {
+                                                "color": "#00285A",
+                                                "fontSize": "12px",                                                
+                                            },
+                                        },
                                     ),
                                     dmc.Button(
                                         "Today",
@@ -203,6 +209,12 @@ app.layout = dmc.MantineProvider(
                                         variant="default",
                                         className="filter-select",
                                         w=100,
+                                        styles={
+                                            "root": {
+                                                "color": "#00285A",
+                                                "fontSize": "12px",
+                                            },
+                                        },
                                     ),
                                 ],
                                 justify="center",

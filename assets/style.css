@@ -1,26 +1,16 @@
-/* Main logo blue 
-#00509B
-
-Dark navy / cube shadow
-#00285A
-
-Medium blue
-#004B8C
-
-Light blue-gray
-#7D91C3
-
-Lighter accent blue
-#829BC8 */
-
-
-
+/* Logo color palette
+Main logo blue: #00509B
+Dark navy / cube shadow: #00285A
+Medium blue: #004B8C
+Light blue-gray: #7D91C3
+Lighter accent blue: #829BC8
+*/
 
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f7f9fc;
-    color: #1f2d3d;
+    background: #F3F6FB;
+    color: #00285A;
 }
 
 .app-container {
@@ -86,13 +76,14 @@ body {
 
 .filter-select input,
 .filter-select button {
-    font-size: 13px;
+    font-size: 12px;
+	color: #00285A;
 }
 
 .filter-select .mantine-Select-input {
     border: 1px solid #d9e2ec;
     border-radius: 4px;
-    color: #1f2d3d;
+    color: #00285A;
     background: #ffffff;
 }
 
@@ -122,7 +113,7 @@ body {
 
 .calendar-wrapper .mantine-DatePicker-weekday,
 .calendar-wrapper .mantine-DatePicker-day {
-    color: #1f2d3d;
+    color: #00285A;
 }
 
 .calendar-wrapper .mantine-DatePicker-weekday {
@@ -137,8 +128,8 @@ body {
 
 .calendar-wrapper .mantine-DatePicker-calendarHeaderLevel {
     font-size: 12px;
-	font-weight: 700;
-	color: #00285A;
+    font-weight: 700;
+    color: #00285A;
 }
 
 .main-content {
@@ -188,7 +179,7 @@ body {
 }
 
 .report-table th {
-    background: #eef3f7;
+    background: #EAF0F8;
     color: #00285A;
     font-weight: 700;
     text-align: center;
@@ -212,7 +203,7 @@ body {
     background: #00509B;
     color: #ffffff;
     font-weight: 700;
-	border-bottom-left-radius: 3px;
+    border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
 }
 
@@ -250,7 +241,7 @@ body {
 }
 
 .debug-table th {
-    background: #eef3f7;
+    background: #EAF0F8;
     color: #00285A;
     border: 1px solid #d9e2ec;
     padding: 4px 6px;
