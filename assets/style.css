@@ -1,3 +1,21 @@
+/* Main logo blue 
+#00509B
+
+Dark navy / cube shadow
+#00285A
+
+Medium blue
+#004B8C
+
+Light blue-gray
+#7D91C3
+
+Lighter accent blue
+#829BC8 */
+
+
+
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -41,7 +59,7 @@ body {
 .sidebar h2 {
     margin-top: 0;
     font-size: 18px;
-    color: #003b5c;
+    color: #00285A;
 }
 
 .sidebar label {
@@ -49,8 +67,8 @@ body {
     margin-top: 16px;
     margin-bottom: 6px;
     font-weight: 700;
-    font-size: 13px;
-    color: #003b5c;
+    font-size: 12px;
+    color: #00285A;
 }
 
 /* Calendar sizing only */
@@ -79,7 +97,7 @@ body {
 }
 
 .filter-select .mantine-Select-input:focus {
-    border-color: #003b5c;
+    border-color: #00285A;
 }
 
 /* Shrinks Mantine DatePicker internals */
@@ -144,7 +162,7 @@ body {
 }
 
 .section-header {
-    background: #003b5c;
+    background: #00285A;
     color: #ffffff;
     padding: 6px 10px;
     border-top-left-radius: 3px;
@@ -164,7 +182,7 @@ body {
 
 .report-table th {
     background: #eef3f7;
-    color: #003b5c;
+    color: #00285A;
     font-weight: 700;
     text-align: center;
     border: 1px solid #d9e2ec;
@@ -184,7 +202,7 @@ body {
 }
 
 .report-table .total-row td {
-    background: #005f86;
+    background: #00509B;
     color: #ffffff;
     font-weight: 700;
 	border-bottom-left-radius: 3px;
@@ -196,7 +214,7 @@ body {
 }
 
 .section-summary {
-    background: #003b5c;
+    background: #00285A;
     color: #ffffff;
     padding: 6px 10px;
     border-top-left-radius: 3px;
@@ -226,7 +244,7 @@ body {
 
 .debug-table th {
     background: #eef3f7;
-    color: #003b5c;
+    color: #00285A;
     border: 1px solid #d9e2ec;
     padding: 4px 6px;
     text-align: left;

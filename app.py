@@ -178,9 +178,7 @@ app.layout = dmc.MantineProvider(
                         className="sidebar-logo",
                         alt="Logo",
                     ),
-                    html.H2("Filters"),
 
-                    html.Label("Date"),
                     html.Div(
                         [
                             dmc.DatePicker(
