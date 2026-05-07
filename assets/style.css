@@ -13,7 +13,6 @@ body {
 .sidebar {
     width: 260px;
     padding: 18px;
-	padding-bottom: 250px;
     background: #ffffff;
     border-right: 1px solid #d9e2ec;
     box-sizing: border-box;
@@ -27,7 +26,16 @@ body {
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+}
+
+.sidebar-logo {
+    display: block;
+    width: 160px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 22px auto;
+    transform: translateY(4px);
 }
 
 .sidebar h2 {

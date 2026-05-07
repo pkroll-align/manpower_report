@@ -173,6 +173,11 @@ app.layout = dmc.MantineProvider(
         [
             html.Div(
                 [
+                    html.Img(
+                        src="/assets/img/logo.png",
+                        className="sidebar-logo",
+                        alt="Logo",
+                    ),
                     html.H2("Filters"),
 
                     html.Label("Date"),
