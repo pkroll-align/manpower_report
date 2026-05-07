@@ -5,6 +5,7 @@ from zoneinfo import ZoneInfo
 
 from dash import Dash, Input, Output, State, ctx, html
 import dash_mantine_components as dmc
+import pandas as pd
 
 from utils.sheets import load_sheet_data
 from utils.data_filters import (
@@ -283,13 +284,21 @@ def update_disabled_dates(n_intervals):
     if "Adjusted Date" not in df.columns:
         return []
 
+    adjusted_dates = pd.to_datetime(
+        df["Adjusted Date"],
+        errors="coerce",
+    )
+
     available_dates = set(
-        df["Adjusted Date"]
+        adjusted_dates
         .dropna()
+        .dt.date
         .astype(str)
-        .str[:10]
         .tolist()
     )
+
+    if not available_dates:
+        return []
 
     today = datetime.now(ZoneInfo(LOCAL_TIMEZONE)).date()
     start_date = today - timedelta(days=120)
