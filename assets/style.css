@@ -13,10 +13,21 @@ body {
 .sidebar {
     width: 260px;
     padding: 18px;
+	padding-bottom: 250px;
     background: #ffffff;
     border-right: 1px solid #d9e2ec;
     box-sizing: border-box;
     overflow-x: hidden;
+    overflow-y: auto;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .sidebar h2 {
@@ -99,6 +110,7 @@ body {
 
 .main-content {
     flex: 1;
+    margin-left: 260px;
     padding: 18px 24px;
     box-sizing: border-box;
     overflow-x: auto;
