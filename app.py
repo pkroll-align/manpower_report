@@ -20,8 +20,6 @@ SHEET_ID = "1ZRTbCI0b7q1OjEf5NOn-IZbVgmetqGkF0Koa4xxliI4"
 WORKSHEET_NAME = "Day Form Responses"
 LOCAL_TIMEZONE = "America/Chicago"
 
-# Auto-refresh interval in milliseconds.
-# 60,000 = refresh once per minute.
 AUTO_REFRESH_INTERVAL_MS = 60000
 
 
